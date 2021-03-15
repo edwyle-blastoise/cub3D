@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include "libft/libft.h"
 #include "gnl/get_next_line.h"
+#include "minilibx_opengl/mlx.h"
 
 typedef struct  s_params
 {
@@ -25,7 +26,25 @@ typedef struct  s_params
     int         b;
     int         floor_color;
     int         ceilling_color;
+    char        **map;
 }               t_params;
+
+typedef struct  s_point
+{
+    int         x;
+    int         y;
+}               t_point;
+
+typedef struct  s_data
+{
+    void        *mlx;
+    void        *win;
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+}               t_data;
 
 void            params_init(t_params *params)
 {
@@ -37,6 +56,13 @@ void            params_init(t_params *params)
     params->b = 0;
     params->floor_color = 0;
     params->ceilling_color = 0;
+    params->map = NULL;
+}
+
+void            points_init(t_point *point)
+{
+    point->x = 0;
+    point->y = 0;
 }
 
 void    define_resolution(char *line, t_params *params)
@@ -131,22 +157,95 @@ void    parser(char *line, t_params *params)
     }
 }
 
-int         main(int argc, char **argv)
+char    **create_map(t_list **head, int size)
+{
+    int     i;
+    t_list *tmp;
+    char    **map;
+    
+    i = 0;
+    tmp = *head;
+    map = ft_calloc(sizeof(char*), size + 1);
+    while (tmp)
+    {
+        map[i] = ft_strdup(tmp->content);
+        i++;
+        tmp = tmp->next;
+    }
+    i = 0;
+    ft_lstclear(head, &free);
+    while (map[i])
+    {
+        ft_putendl_fd(map[i], 1);
+        i++;
+    }
+    return (map);
+}
+
+char         **read_map(char *argv1)
 {
     int         fd;
     char        *line;
+    t_list      *head;
     t_params    params;
     
     line = NULL;
-    if (argc == 2)
+    head = NULL;
+    fd = open(argv1, O_RDONLY);
+    params_init(&params);
+    while (get_next_line(fd, &line) > 0)
     {
-        fd = open(argv[1], O_RDONLY);
-        params_init(&params);
-        while (get_next_line(fd, &line) > 0)
-        {
-            parser(line, &params);
-        }
+        if (*line == ' ' || *line == '1')
+            ft_lstadd_back(&head, ft_lstnew(line));
+        parser(line, &params);
     }
+    ft_lstadd_back(&head, ft_lstnew(line));
+    return (create_map(&head, ft_lstsize(head)));
+}
+
+void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
+}
+
+void      draw_map(t_params *params, t_data  *data)
+{
+    t_point point;
+
+    points_init (&point);
+    while (params->map[point.y])
+    {
+        point.x = 0;
+         while (params->map[point.y][point.x])
+        {
+            if (params->map[point.y][point.x] == '1')
+                my_mlx_pixel_put(data, point.x, point.y, 0xFFFFFF);
+            point.x++;
+        }
+        point.y++;
+    }
+    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+    mlx_loop(data->mlx);
+}
+
+int         main(int argc, char **argv)
+{
+    t_params    params;
+    t_data      data;
+    
+    if (argc == 2)
+        params.map = read_map(argv[1]);
+    else
+        printf("Need a map");
+    
+    data.mlx = mlx_init();
+    data.win = mlx_new_window(data.mlx, 1920, 1080, "Hello world!");
+    data.img = mlx_new_image(data.mlx, 1920, 1080);
+    data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+    draw_map(&params, &data);
     // else if (argc == 3)
     // {
         

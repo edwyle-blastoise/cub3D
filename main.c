@@ -46,7 +46,8 @@ int             main(void)
     {
         x = 5;
         while (x++ < 100)
-             my_mlx_pixel_put(&img, x, y, 14753280);
+             my_mlx_pixel_put(&img, x, y, 0xFFFFFF);
+            // mlx_pixel_put(mlx, mlx_win, x, y, 0xFFFFFF);
     }
     mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
     mlx_loop(mlx);

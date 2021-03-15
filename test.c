@@ -26,13 +26,13 @@ typedef struct s_all
     char        **map;
 }               t_all;
 
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-    char    *dst;
+// void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+// {
+//     char    *dst;
 
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
-}
+//     dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+//     *(unsigned int*)dst = color;
+// }
 
 char            **create_map(t_list **head, int size)
 {
@@ -50,10 +50,13 @@ char            **create_map(t_list **head, int size)
         i++;
         tmp = tmp->next;
     }
-    // i = 0;
-    // ft_lstclear(head, &free);
-    // while (map[i])
-    //     ft_putendl_fd(map[i], 1);
+    i = 0;
+    ft_lstclear(head, &free);
+    while (map[i])
+    {
+        ft_putendl_fd(map[i], 1);
+        i++;
+    }
     return (map);
 }
 
@@ -79,28 +82,28 @@ char         **read_map(char *argv1)
     return (create_map(&head, size));
 }
 
-void      draw_map(t_all *all)
-{
-    t_point point;
+// void      draw_map(t_all *all)
+// {
+//     t_point point;
 
-    ft_bzero(&point, sizeof(t_point));
-    while (all->map[point.y])
-    {
-        point.x = 0;
-         while (all->map[point.y][point.x])
-        {
-            if (all->map[point.y][point.x] == '1')
-                my_mlx_pixel_put(all->data->img, point.x, point.y, 0xFFFFFF);
-            point.x++;
-        }
-        point.y++;
-    }
-}
+//     ft_bzero(&point, sizeof(t_point));
+//     while (all->map[point.y])
+//     {
+//         point.x = 0;
+//          while (all->map[point.y][point.x])
+//         {
+//             if (all->map[point.y][point.x] == '1')
+//                 my_mlx_pixel_put(all->data->img, point.x, point.y, 0xFFFFFF);
+//             point.x++;
+//         }
+//         point.y++;
+//     }
+// }
 
 int             main(int argc, char **argv)
 {
     (void)argc;
-    t_data  data;
+    // t_data  data;
     t_all   all;
     // void    *mlx;
     // void    *mlx_win;
@@ -109,11 +112,11 @@ int             main(int argc, char **argv)
         all.map = read_map(argv[1]);
     else
         ft_putendl_fd("need a map", 2);
-    data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, 1920, 1080, "Hello world!");
-    data.img = mlx_new_image(data.mlx, 1920, 1080);
-    data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-    all.data = &data;
+    // data.mlx = mlx_init();
+    // data.win = mlx_new_window(data.mlx, 1920, 1080, "Hello world!");
+    // data.img = mlx_new_image(data.mlx, 1920, 1080);
+    // data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+    // all.data = &data;
     // while (img.map[point.y])
     // {
     //     point.x = 0;
@@ -126,7 +129,7 @@ int             main(int argc, char **argv)
     //     point.y++;
     // }
 
-    draw_map(&all);
+    // draw_map(&all);
 
     // while (y++ < 100)
     // {
@@ -135,5 +138,5 @@ int             main(int argc, char **argv)
     //          my_mlx_pixel_put(&img, x, y, 0x00FF0000);
     // }
     // mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-    mlx_loop(data.mlx);
+    // mlx_loop(data.mlx);
 }
