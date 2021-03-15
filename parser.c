@@ -15,6 +15,7 @@
 #include "libft/libft.h"
 #include "gnl/get_next_line.h"
 #include "minilibx_opengl/mlx.h"
+#define SCALE 16
 
 typedef struct  s_params
 {
@@ -57,12 +58,6 @@ void            params_init(t_params *params)
     params->floor_color = 0;
     params->ceilling_color = 0;
     params->map = NULL;
-}
-
-void            points_init(t_point *point)
-{
-    point->x = 0;
-    point->y = 0;
 }
 
 void    define_resolution(char *line, t_params *params)
@@ -211,18 +206,37 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
+void            scale_map(t_data  *data, t_point point)
+{
+    t_point end;
+
+    end.x = (point.x + 1) * SCALE;
+    end.y = (point.y + 1) * SCALE;
+    point.x *= SCALE;
+    point.y *= SCALE;
+    while (point.y < end.y)
+    {
+        while (point.x < end.x)
+            my_mlx_pixel_put(data, point.x++, point.y, 0xFFFFFF);
+        point.x -= SCALE;
+        point.y++;
+    }
+}
+
 void      draw_map(t_params *params, t_data  *data)
 {
     t_point point;
 
-    points_init (&point);
+    point.x = 0;
+    point.y = 0;
     while (params->map[point.y])
     {
         point.x = 0;
          while (params->map[point.y][point.x])
         {
             if (params->map[point.y][point.x] == '1')
-                my_mlx_pixel_put(data, point.x, point.y, 0xFFFFFF);
+                // my_mlx_pixel_put(data, point.x, point.y, 0xFFFFFF);
+                scale_map(data, point);
             point.x++;
         }
         point.y++;
@@ -240,7 +254,6 @@ int         main(int argc, char **argv)
         params.map = read_map(argv[1]);
     else
         printf("Need a map");
-    
     data.mlx = mlx_init();
     data.win = mlx_new_window(data.mlx, 1920, 1080, "Hello world!");
     data.img = mlx_new_image(data.mlx, 1920, 1080);
