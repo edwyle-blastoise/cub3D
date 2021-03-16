@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		= test.c \
+SRCS		= parser.c \
 			  ${GNL_DIR}/get_next_line.c ${GNL_DIR}/get_next_line_utils.c 
 
 HEADERS		= cub3d.h 
@@ -18,11 +18,13 @@ HEADERS		= cub3d.h
 OBJS		= ${SRCS:.c=.o}
 
 MLX_DIR		= minilibx_opengl
+# MLX_DIR		= minilibx_mms
 LIBFT_DIR	= libft
 GNL_DIR		= gnl
 
 LIBFT		= ${LIBFT_DIR}/libft.a
 LIBMLX		= ${MLX_DIR}/libmlx.a
+# LIBMLX		= ${MLX_DIR}/libmlx.dylib
 
 INCLUDES	= -I$(LIBFT_DIR) -I$(MLX_DIR) -I$(GNL_DIR)
 

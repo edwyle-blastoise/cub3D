@@ -15,7 +15,7 @@
 #include "libft/libft.h"
 #include "gnl/get_next_line.h"
 #include "minilibx_opengl/mlx.h"
-#define SCALE 16
+#define SCALE 20
 
 typedef struct  s_params
 {
@@ -35,6 +35,14 @@ typedef struct  s_point
     int         x;
     int         y;
 }               t_point;
+
+typedef struct s_player
+{
+    int x;
+    int y;
+    int dir;
+}               t_player;
+
 
 typedef struct  s_data
 {
@@ -177,22 +185,21 @@ char    **create_map(t_list **head, int size)
     return (map);
 }
 
-char         **read_map(char *argv1)
+char         **read_map(char *argv1, t_params *params)
 {
     int         fd;
     char        *line;
     t_list      *head;
-    t_params    params;
     
     line = NULL;
     head = NULL;
     fd = open(argv1, O_RDONLY);
-    params_init(&params);
+    params_init(params);
     while (get_next_line(fd, &line) > 0)
     {
         if (*line == ' ' || *line == '1')
             ft_lstadd_back(&head, ft_lstnew(line));
-        parser(line, &params);
+        parser(line, params);
     }
     ft_lstadd_back(&head, ft_lstnew(line));
     return (create_map(&head, ft_lstsize(head)));
@@ -206,7 +213,7 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-void            scale_map(t_data  *data, t_point point)
+void            scale_map(t_data  *data, t_point point, int color)
 {
     t_point end;
 
@@ -217,7 +224,7 @@ void            scale_map(t_data  *data, t_point point)
     while (point.y < end.y)
     {
         while (point.x < end.x)
-            my_mlx_pixel_put(data, point.x++, point.y, 0xFFFFFF);
+            my_mlx_pixel_put(data, point.x++, point.y, color);
         point.x -= SCALE;
         point.y++;
     }
@@ -235,8 +242,9 @@ void      draw_map(t_params *params, t_data  *data)
          while (params->map[point.y][point.x])
         {
             if (params->map[point.y][point.x] == '1')
-                // my_mlx_pixel_put(data, point.x, point.y, 0xFFFFFF);
-                scale_map(data, point);
+                scale_map(data, point, 0xFFFFFF);
+            if (params->map[point.y][point.x] == 'N' || params->map[point.y][point.x] == 'S' || params->map[point.y][point.x] == 'E' || params->map[point.y][point.x] == 'W')
+                scale_map(data, point, 0x00FF00);
             point.x++;
         }
         point.y++;
@@ -245,18 +253,24 @@ void      draw_map(t_params *params, t_data  *data)
     mlx_loop(data->mlx);
 }
 
+// void        draw_player(t_player *player)
+// {
+//     player->x = 
+//     player->y = 
+// }
+
 int         main(int argc, char **argv)
 {
     t_params    params;
     t_data      data;
     
     if (argc == 2)
-        params.map = read_map(argv[1]);
+        params.map = read_map(argv[1], &params);
     else
         printf("Need a map");
     data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, 1920, 1080, "Hello world!");
-    data.img = mlx_new_image(data.mlx, 1920, 1080);
+    data.win = mlx_new_window(data.mlx, params.width, params.height, "Hello world!");
+    data.img = mlx_new_image(data.mlx, params.width, params.height);
     data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
     draw_map(&params, &data);
     // else if (argc == 3)
