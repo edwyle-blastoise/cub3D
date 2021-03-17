@@ -16,6 +16,12 @@
 #include "gnl/get_next_line.h"
 #include "minilibx_opengl/mlx.h"
 #define SCALE 20
+#define ENTER 36
+#define ESC 53
+#define W 13
+#define A 0
+#define S 1
+#define D 2
 
 typedef struct  s_params
 {
@@ -230,6 +236,14 @@ void            scale_map(t_data  *data, t_point point, int color)
     }
 }
 
+int         close_win(int keycode, t_data *data)
+{
+    if (keycode == ESC)
+    //free malloc, close fd
+        exit (0);
+    return (0);
+}
+
 void      draw_map(t_params *params, t_data  *data)
 {
     t_point point;
@@ -250,14 +264,18 @@ void      draw_map(t_params *params, t_data  *data)
         point.y++;
     }
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+    mlx_hook(data->win, 2, 1L<<0, close_win, &data);
     mlx_loop(data->mlx);
 }
+
 
 // void        draw_player(t_player *player)
 // {
 //     player->x = 
 //     player->y = 
 // }
+
+
 
 int         main(int argc, char **argv)
 {
@@ -273,6 +291,7 @@ int         main(int argc, char **argv)
     data.img = mlx_new_image(data.mlx, params.width, params.height);
     data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
     draw_map(&params, &data);
+    
     // else if (argc == 3)
     // {
         
