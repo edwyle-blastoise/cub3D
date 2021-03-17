@@ -10,58 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <fcntl.h>
-#include "libft/libft.h"
-#include "gnl/get_next_line.h"
-#include "minilibx_opengl/mlx.h"
-#define SCALE 20
-#define ENTER 36
-#define ESC 53
-#define W 13
-#define A 0
-#define S 1
-#define D 2
+#include "cub3d.h"
 
-typedef struct  s_params
-{
-    int         width;
-    int         height;
-    int         t;
-    int         r;
-    int         g;
-    int         b;
-    int         floor_color;
-    int         ceilling_color;
-    char        **map;
-}               t_params;
-
-typedef struct  s_point
-{
-    int         x;
-    int         y;
-}               t_point;
-
-typedef struct s_player
-{
-    int x;
-    int y;
-    int dir;
-}               t_player;
-
-
-typedef struct  s_data
-{
-    void        *mlx;
-    void        *win;
-    void        *img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-}               t_data;
-
-void            params_init(t_params *params)
+void    params_init(t_params *params)
 {
     params->width = 0;
     params->height = 0;
@@ -85,7 +36,7 @@ void    define_resolution(char *line, t_params *params)
     printf("%d %d\n", params->width, params->height);
 }
 
-int    create_trgb(int r, int g, int b)
+int     create_trgb(int r, int g, int b)
 {
     int t;
 
@@ -93,7 +44,7 @@ int    create_trgb(int r, int g, int b)
     return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int    define_color(char *line, t_params *params)
+int     define_color(char *line, t_params *params)
 {
     char        **floor_color;
     char        **rgb;
@@ -191,7 +142,7 @@ char    **create_map(t_list **head, int size)
     return (map);
 }
 
-char         **read_map(char *argv1, t_params *params)
+char    **read_map(char *argv1, t_params *params)
 {
     int         fd;
     char        *line;
@@ -211,7 +162,7 @@ char         **read_map(char *argv1, t_params *params)
     return (create_map(&head, ft_lstsize(head)));
 }
 
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char    *dst;
 
@@ -219,7 +170,7 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-void            scale_map(t_data  *data, t_point point, int color)
+void    scale_map(t_data  *data, t_point point, int color)
 {
     t_point end;
 
@@ -236,7 +187,7 @@ void            scale_map(t_data  *data, t_point point, int color)
     }
 }
 
-int         close_win(int keycode, t_data *data)
+int     close_win(int keycode, t_data *data)
 {
     if (keycode == ESC)
     //free malloc, close fd
@@ -244,7 +195,7 @@ int         close_win(int keycode, t_data *data)
     return (0);
 }
 
-void      draw_map(t_params *params, t_data  *data)
+void    draw_map(t_params *params, t_data  *data)
 {
     t_point point;
 
@@ -268,16 +219,7 @@ void      draw_map(t_params *params, t_data  *data)
     mlx_loop(data->mlx);
 }
 
-
-// void        draw_player(t_player *player)
-// {
-//     player->x = 
-//     player->y = 
-// }
-
-
-
-int         main(int argc, char **argv)
+int     main(int argc, char **argv)
 {
     t_params    params;
     t_data      data;
@@ -291,7 +233,6 @@ int         main(int argc, char **argv)
     data.img = mlx_new_image(data.mlx, params.width, params.height);
     data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
     draw_map(&params, &data);
-    
     // else if (argc == 3)
     // {
         
