@@ -22,7 +22,6 @@ void    params_init(t_params *params)
     params->b = 0;
     params->floor_color = 0;
     params->ceilling_color = 0;
-    params->map = NULL;
 }
 
 void    define_resolution(char *line, t_params *params)
@@ -170,69 +169,122 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-void    scale_map(t_data  *data, t_point point, int color)
+void    scale_map(t_data  *data, int x, int y, int color)
 {
-    t_point end;
+    int x_end;
+    int y_end;
 
-    end.x = (point.x + 1) * SCALE;
-    end.y = (point.y + 1) * SCALE;
-    point.x *= SCALE;
-    point.y *= SCALE;
-    while (point.y < end.y)
+    x_end = (x + 1) * SCALE;
+    y_end = (y + 1) * SCALE;
+    x *= SCALE;
+    y *= SCALE;
+    while (y < y_end)
     {
-        while (point.x < end.x)
-            my_mlx_pixel_put(data, point.x++, point.y, color);
-        point.x -= SCALE;
-        point.y++;
+        while (x < x_end)
+            my_mlx_pixel_put(data, x++, y, color);
+        x -= SCALE;
+        y++;
     }
 }
 
-int     close_win(int keycode, t_data *data)
+void    init_player(char **map, t_player *plr)
 {
-    if (keycode == ESC)
-    //free malloc, close fd
-        exit (0);
-    return (0);
-}
+    int x;
+    int y;
 
-void    draw_map(t_params *params, t_data  *data)
-{
-    t_point point;
-
-    point.x = 0;
-    point.y = 0;
-    while (params->map[point.y])
+    x = 0;
+    y = 0;
+    while (map[y])
     {
-        point.x = 0;
-         while (params->map[point.y][point.x])
+        x = 0;
+        while (map[y][x])
         {
-            if (params->map[point.y][point.x] == '1')
-                scale_map(data, point, 0xFFFFFF);
-            if (params->map[point.y][point.x] == 'N' || params->map[point.y][point.x] == 'S' || params->map[point.y][point.x] == 'E' || params->map[point.y][point.x] == 'W')
-                scale_map(data, point, 0x00FF00);
-            point.x++;
+            if (ft_strchr("NEWS", map[y][x]))
+            {
+                plr->x = (double)x;
+                plr->y = (double)y;
+                plr->direction = M_PI;
+                break ;
+            }
+            x++;
         }
-        point.y++;
+        y++;
     }
-    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-    mlx_hook(data->win, 2, 1L<<0, close_win, &data);
-    mlx_loop(data->mlx);
+}
+
+void    draw_player(t_all *all)
+{
+    my_mlx_pixel_put(all->data, all->plr->x * SCALE, all->plr->y * SCALE, 0x00FF00);
+}
+
+void    draw_map(t_all *all)
+{
+    int x;
+    int y;
+
+    x = 0;
+    y = 0;
+    while (all->map[y])
+    {
+        x = 0;
+         while (all->map[y][x])
+        {
+            if (all->map[y][x] == '1')
+                scale_map(all->data, x, y, 0xFFFFFF);
+            else
+                scale_map(all->data, x, y, 0x000000);
+            x++;
+        }
+        y++;
+    }
+}
+
+int    key_press(int key, t_all *all)
+{
+    if (key == W)
+    {
+        all->plr->y -= 1;
+    }
+    if (key == A)
+        all->plr->x -= 1;
+    if (key == S)
+        all->plr->y += 1;
+    if (key == D)
+        all->plr->x += 1;
+    else if (key == ESC)
+    {
+        //free malloc, close fd
+        exit (0);
+    }
+    draw_map(all);
+    draw_player(all);
+    mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
+    return (0);
 }
 
 int     main(int argc, char **argv)
 {
     t_params    params;
     t_data      data;
+    t_player    plr;
+    t_all       all;
     
     if (argc == 2)
-        params.map = read_map(argv[1], &params);
+        all.map = read_map(argv[1], &params);
     else
         printf("Need a map");
+    init_player(all.map, &plr);
     data.mlx = mlx_init();
     data.win = mlx_new_window(data.mlx, params.width, params.height, "Hello world!");
     data.img = mlx_new_image(data.mlx, params.width, params.height);
     data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-    draw_map(&params, &data);
+    all.plr = &plr;
+    all.data = &data;
+    draw_map(&all);
+    draw_player(&all);
+    mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+    mlx_hook(data.win, 2, 1L<<0, key_press, &all);
+    mlx_loop(data.mlx);
     // else if (argc == 3)
     // {
         

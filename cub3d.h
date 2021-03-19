@@ -36,13 +36,16 @@ typedef struct  s_params
     int         b;
     int         floor_color;
     int         ceilling_color;
-    char        **map;
+    char        *north_texture;
+    char        *south_texture;
+    char        *west_texture;
+    char        *east_texture;
 }               t_params;
 
 typedef struct  s_point
 {
-    int         x;
-    int         y;
+    double         x;
+    double         y;
 }               t_point;
 
 typedef struct s_player
@@ -62,5 +65,13 @@ typedef struct  s_data
     int         line_length;
     int         endian;
 }               t_data;
+
+typedef struct  s_all
+{
+    t_params    *params;
+    t_data      *data;
+    t_player    *plr;
+    char        **map;
+}               t_all;
 
 #endif
