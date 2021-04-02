@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "mlx.h"
-// #include <math.h>
 //-lmlx -framework OpenGL -framework AppKit
 
 

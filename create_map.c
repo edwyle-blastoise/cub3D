@@ -22,12 +22,13 @@ void    params_init(t_params *params)
     params->b = 0;
     params->floor_color = 0;
     params->ceilling_color = 0;
+    params->floor_color = 0;
 }
 
 char    **create_map(t_list **head, int size)
 {
     int     i;
-    t_list *tmp;
+    t_list  *tmp;
     char    **map;
     
     i = 0;
@@ -51,17 +52,16 @@ char    **create_map(t_list **head, int size)
 
 char    **read_map(char *argv1, t_params *params)
 {
-    int         fd;
     char        *line;
     t_list      *head;
     
     line = NULL;
     head = NULL;
-    fd = open(argv1, O_RDONLY);
+    params->fd = open(argv1, O_RDONLY);
     params_init(params);
-    while (get_next_line(fd, &line) > 0)
+    while (get_next_line(params->fd, &line) > 0)
     {
-        if (*line == ' ' || *line == '\t' || *line == '1')
+        if (*line == ' ' || *line == '1')
             ft_lstadd_back(&head, ft_lstnew(line));
         parser(line, params);
     }
@@ -109,8 +109,6 @@ void    draw_map(t_all *all)
         {
             if (all->map[y][x] == '1')
                 scale_map(all->data, x, y, 0xFFFFFF);
-            else
-                scale_map(all->data, x, y, 0x000000);
             x++;
         }
         y++;

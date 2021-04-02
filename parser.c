@@ -15,11 +15,23 @@
 void    define_resolution(char *line, t_params *params)
 {
     char    **resolution;
+    int     i;
 
     resolution = NULL;
+    i = 0;
     resolution = ft_split(line, ' ');
-    params->width = ft_atoi(resolution[1]);
-    params->height = ft_atoi(resolution[2]);
+    while (resolution[i])
+        i++;
+    if (i == 3)
+    {
+        params->width = ft_atoi(resolution[1]);
+        params->height = ft_atoi(resolution[2]);
+    }
+    else
+    {
+        printf("Error\nResolution must have two int value");
+        error_close(params->fd);
+    }
     printf("%d %d\n", params->width, params->height);
 }
 
@@ -33,18 +45,33 @@ int     create_trgb(int r, int g, int b)
 
 int     define_color(char *line, t_params *params)
 {
-    char        **floor_color;
+    char        **str_color;
     char        **rgb;
     int         color;
+    int         i;
 
-    floor_color = NULL;
+    str_color = NULL;
     rgb = NULL;
     color = 0;
-    floor_color = ft_split(line, ' ');
-    rgb = ft_split(floor_color[1], ',');
-    params->r = ft_atoi(rgb[0]);
-    params->g = ft_atoi(rgb[1]);
-    params->b = ft_atoi(rgb[2]);
+    i = 0;
+    str_color = ft_split(line, ' ');
+    while (str_color[i])
+        i++;
+    if (i == 2)
+    {
+        rgb = ft_split(str_color[1], ',');
+        params->r = ft_atoi(rgb[0]);
+        params->g = ft_atoi(rgb[1]);
+        params->b = ft_atoi(rgb[2]);
+    }
+    else if (i == 4)
+    {
+        params->r = ft_atoi(str_color[1]);
+        params->g = ft_atoi(str_color[2]);
+        params->b = ft_atoi(str_color[3]);
+    }
+    else
+        printf("Error\nColors must have three int value");
     if ((params->r >= 0 && params->r <= 255) && (params->g >= 0 && params->g <= 255) \
         && (params->b >= 0 && params->b <= 255))
         {
@@ -56,11 +83,31 @@ int     define_color(char *line, t_params *params)
     return (0);
 }
 
+int    check_map(const char *line)
+{
+    int i;
+    int len;
+
+    i = 1;
+    len = ft_strlen(line);
+    while (i < len)
+    {
+        if (line[i] == '1' || line[i] == '0' || line[i] == '2' || line[i] == ' ')
+        i++;
+    }
+    if (line[i] == '1')
+        return (0);
+    else
+        return (1);
+}
+
 void    parser(char *line, t_params *params)
 {
     int i;
+    // t_list      *head;
     
     i = 0;
+    // head = NULL;
     while (line[i])
     {
         if (line[i] == 'R' && line[++i] == ' ') //resolution;
@@ -98,8 +145,18 @@ void    parser(char *line, t_params *params)
             params->ceilling_color = define_color(line, params);
             printf("C_color: %d\n", params->ceilling_color);
         }
-        // else if (line[i] == '\0')
+        // else if (line[i] == ' ' || line[i] == '1')
+        // {
+        //     if ((check_map(line) == 0))
+
+        // }
         else
             return ;
     }
 }
+
+//проверить символы карты
+//посчитать количество строк
+//сделать флаг наличия ирока
+//проверить, что в карте нет пустых строк
+//проверить, что после карты в файле ничего больше нет

@@ -18,7 +18,7 @@
 #include "libft/libft.h"
 #include "gnl/get_next_line.h"
 #include "minilibx_opengl/mlx.h"
-#define SCALE 40
+#define SCALE 20
 #define ENTER 36
 #define ESC 53
 #define W 13
@@ -44,6 +44,7 @@ typedef struct  s_params
     char        *south_texture;
     char        *west_texture;
     char        *east_texture;
+    int         fd;
 }               t_params;
 
 typedef struct  s_point
@@ -72,6 +73,7 @@ typedef struct  s_data
 
 typedef struct  s_all
 {
+    t_point     *point;
     t_params    *params;
     t_data      *data;
     t_player    *plr;
@@ -92,6 +94,9 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void    scale_map(t_data  *data, int x, int y, int color);
 void    draw_map(t_all *all);
 void	ft_cast_rays(t_all *all);
-
+int     key_press(int key, t_all *all);
+int     check_map(const char *line);
+int     check_wall(int key, t_all *all);
+void    error_close(int fd);
 
 #endif
