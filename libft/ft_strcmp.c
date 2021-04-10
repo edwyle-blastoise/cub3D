@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memccpy.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/30 20:06:24 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/24 14:38:38 by eblastoi         ###   ########.fr       */
+/*   Created: 2020/09/13 15:38:54 by eblastoi          #+#    #+#             */
+/*   Updated: 2020/10/31 16:15:26 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
+int	ft_strcmp(char *s1, char *s2)
 {
-	unsigned int		i;
-	unsigned char		cptr;
-	unsigned char		*dptr;
-	const unsigned char	*sptr;
+	int i;
 
-	cptr = c;
-	dptr = dst;
-	sptr = src;
 	i = 0;
-	while (i < n)
+	while (s1[i] != '\0' || s2[i] != '\0')
 	{
-		dptr[i] = sptr[i];
-		if (dptr[i] == cptr)
-			return (&dptr[i + 1]);
-		i++;
+		if (s1[i] == s2[i])
+			i++;
+		else
+			return (s1[i] - s2[i]);
 	}
-	return (NULL);
+	return (0);
 }

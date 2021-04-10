@@ -14,6 +14,7 @@
 
 void    params_init(t_params *params)
 {
+    params->settings = 0;
     params->width = 0;
     params->height = 0;
     params->t = 0;
@@ -23,6 +24,9 @@ void    params_init(t_params *params)
     params->floor_color = 0;
     params->ceilling_color = 0;
     params->floor_color = 0;
+    params->map_start = 0;
+    params->plr_found = 0;
+    params->error = 0;
 }
 
 char    **create_map(t_list **head, int size)
@@ -33,7 +37,8 @@ char    **create_map(t_list **head, int size)
     
     i = 0;
     tmp = *head;
-    map = ft_calloc(sizeof(char*), size + 1);
+    if (!(map = ft_calloc(sizeof(char*), size + 1)))
+        return (NULL);
     while (tmp)
     {
         map[i] = ft_strdup(tmp->content);
@@ -50,23 +55,24 @@ char    **create_map(t_list **head, int size)
     return (map);
 }
 
-char    **read_map(char *argv1, t_params *params)
+void    read_map(char *argv1, t_all *all)
 {
     char        *line;
     t_list      *head;
     
     line = NULL;
     head = NULL;
-    params->fd = open(argv1, O_RDONLY);
-    params_init(params);
-    while (get_next_line(params->fd, &line) > 0)
+    all->params->fd = open(argv1, O_RDONLY);
+    params_init(all->params);
+    while (get_next_line(all->params->fd, &line) > 0)
     {
-        if (*line == ' ' || *line == '1')
+        if (all->params->settings == 8)
             ft_lstadd_back(&head, ft_lstnew(line));
-        parser(line, params);
+        parser(line, all);
     }
     ft_lstadd_back(&head, ft_lstnew(line));
-    return (create_map(&head, ft_lstsize(head)));
+    all->params->map = create_map(&head, ft_lstsize(head));
+    check_map(all);
 }
 
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -102,13 +108,15 @@ void    draw_map(t_all *all)
 
     x = 0;
     y = 0;
-    while (all->map[y])
+    while (all->params->map[y])
     {
         x = 0;
-         while (all->map[y][x])
+         while (all->params->map[y][x])
         {
-            if (all->map[y][x] == '1')
+            if (all->params->map[y][x] == '1')
                 scale_map(all->data, x, y, 0xFFFFFF);
+            else
+                scale_map(all->data, x, y, all->params->ceilling_color);
             x++;
         }
         y++;

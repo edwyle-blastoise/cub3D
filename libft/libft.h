@@ -36,6 +36,7 @@ char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strnstr(const char *haystack, const char *needle,
 				size_t len);
+int				ft_strcmp(char *s1, char *s2);
 int				ft_strncmp(char *s1, const char *s2, unsigned int n);
 int				ft_atoi(char *str);
 int				ft_isalpha(int c);

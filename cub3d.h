@@ -32,6 +32,7 @@
 
 typedef struct  s_params
 {
+    int         settings;
     int         width;
     int         height;
     int         t;
@@ -45,13 +46,11 @@ typedef struct  s_params
     char        *west_texture;
     char        *east_texture;
     int         fd;
+    char        **map;
+    int         map_start;
+    int         plr_found;
+    int         error;
 }               t_params;
-
-typedef struct  s_point
-{
-    double         x;
-    double         y;
-}               t_point;
 
 typedef struct s_player
 {
@@ -73,30 +72,30 @@ typedef struct  s_data
 
 typedef struct  s_all
 {
-    t_point     *point;
     t_params    *params;
     t_data      *data;
     t_player    *plr;
-    char        **map;
 }               t_all;
 
-void    params_init(t_params *params);
-void    define_resolution(char *line, t_params *params);
-int     create_trgb(int r, int g, int b);
-int     define_color(char *line, t_params *params);
-void    parser(char *line, t_params *params);
-void    init_player(char **map, t_player *plr);
-void    draw_player(t_all *all);
-void	ft_cast_ray(t_all *all);
-char    **create_map(t_list **head, int size);
-char    **read_map(char *argv1, t_params *params);
+// void    params_init(t_params *params);
+// void    define_resolution(char *line, t_params *params);
+// int     create_trgb(int r, int g, int b);
+// int     define_color(char *line, t_params *params);
+void    parser(char *line, t_all *all);
+void    init_player(t_all *all);
+// void    draw_player(t_all *all);
+// void	ft_cast_ray(t_all *all);
+// char    **create_map(t_list **head, int size);
+void    read_map(char *argv1, t_all *all);
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void    scale_map(t_data  *data, int x, int y, int color);
+// void    scale_map(t_data  *data, int x, int y, int color);
 void    draw_map(t_all *all);
 void	ft_cast_rays(t_all *all);
-int     key_press(int key, t_all *all);
-int     check_map(const char *line);
-int     check_wall(int key, t_all *all);
-void    error_close(int fd);
+// int     key_press(int key, t_all *all);
+void    check_map(t_all *all);
+// int     check_wall(int key, t_all *all);
+void    error_close(t_params *params);
+// void    check_arg_name(char *argv1, t_params *params);
+// void    check_player(t_all *all, char *line);
 
 #endif

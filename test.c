@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "mlx.h"
 //-lmlx -framework OpenGL -framework AppKit
+//gcc -g -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit gnl/*c libmlx.a libft.a cub3d.c parser.c player.c create_map.c raycasting.c check_map.c
 
 
 typedef struct  s_data {

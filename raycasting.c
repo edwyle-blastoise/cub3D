@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/10 16:47:37 by eblastoi          #+#    #+#             */
+/*   Updated: 2021/04/10 16:47:40 by eblastoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	ft_cast_ray(t_all *all)
@@ -7,7 +19,7 @@ void	ft_cast_ray(t_all *all)
 
     ray_x = all->plr->x * SCALE + SCALE/2;
     ray_y = all->plr->y * SCALE + SCALE/2;
-	while (all->map[(int)(ray_y / SCALE)][(int)(ray_x / SCALE)] != '1')
+	while (all->params->map[(int)(ray_y / SCALE)][(int)(ray_x / SCALE)] != '1')
 	{
 		ray_x += cos(all->plr->direction);
 		ray_y += sin(all->plr->direction);
@@ -29,7 +41,7 @@ void	ft_cast_rays(t_all *all)
 	{
 		ray.x = all->plr->x * SCALE + SCALE/2; // каждый раз возвращаемся в точку начала
 		ray.y = all->plr->y * SCALE + SCALE/2;
-		while (all->map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
+		while (all->params->map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
 		{
 			ray.x += cos(start);
 			ray.y += sin(start);
@@ -43,9 +55,9 @@ void	ft_cast_rays(t_all *all)
 // {
 //     x = (int)x / SCALE;
 //     y = (int)y / SCALE;
-//     if (all->map[(int)y][(int)x] == ' ')
+//     if (all->params->map[(int)y][(int)x] == ' ')
 //         return (-1);
-//     else if (all->map[(int)y][(int)x] == '1')
+//     else if (all->params->map[(int)y][(int)x] == '1')
 //         return (1);
 //     else
 //         return (0);

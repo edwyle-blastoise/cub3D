@@ -29,8 +29,8 @@ void    define_resolution(char *line, t_params *params)
     }
     else
     {
-        printf("Error\nResolution must have two int value");
-        error_close(params->fd);
+        params->error = 6;
+        error_close(params);
     }
     printf("%d %d\n", params->width, params->height);
 }
@@ -71,7 +71,10 @@ int     define_color(char *line, t_params *params)
         params->b = ft_atoi(str_color[3]);
     }
     else
-        printf("Error\nColors must have three int value");
+    {
+        params->error = 7;
+        error_close(params);
+    }
     if ((params->r >= 0 && params->r <= 255) && (params->g >= 0 && params->g <= 255) \
         && (params->b >= 0 && params->b <= 255))
         {
@@ -79,84 +82,125 @@ int     define_color(char *line, t_params *params)
             return (color);
         }
     else
-        printf("Error\nColors must be in range [0,255]");
+    {
+        params->error = 8;
+        error_close(params);
+    }
     return (0);
 }
 
-int    check_map(const char *line)
+void    define_textures(char *line, t_params *params)
 {
-    int i;
-    int len;
+    (void)params;
+    char    **textures;
+    int     i;
 
-    i = 1;
-    len = ft_strlen(line);
-    while (i < len)
-    {
-        if (line[i] == '1' || line[i] == '0' || line[i] == '2' || line[i] == ' ')
+    textures = NULL;
+    i = 0;
+    textures = ft_split(line, ' ');
+    while(textures[i])
         i++;
+    if (i == 2)
+    {
+        if ((ft_strcmp(textures[0], "NO") == 0))
+            params->north_texture = textures[1];
+        else if ((ft_strcmp(textures[0], "SO") == 0))
+            params->south_texture = textures[1];
+        else if ((ft_strcmp(textures[0], "WE") == 0))
+            params->west_texture = textures[1];
+        else if ((ft_strcmp(textures[0], "EA") == 0))
+            params->east_texture = textures[1];
     }
-    if (line[i] == '1')
-        return (0);
     else
-        return (1);
+    {
+        params->error = 9;
+        error_close(params);
+    }
+    printf("%s\n", textures[1]);
 }
 
-void    parser(char *line, t_params *params)
+void    parser(char *line, t_all *all)
 {
-    int i;
-    // t_list      *head;
+    int     i;
+    int     len;
     
     i = 0;
-    // head = NULL;
-    while (line[i])
+    len = ft_strlen(line);
+    if (ft_strnstr(line, "R ", len))
     {
-        if (line[i] == 'R' && line[++i] == ' ') //resolution;
-        {
-            printf("R ");
-            define_resolution(line, params);
-        }
-        else if (line[i] == 'N' && line[++i] == 'O' && line[++i] == ' ')  //north_texture;
-        {
-            printf("NO\n");
-        }
-        else if (line[i] == 'S' && line[++i] == 'O' && line[++i] == ' ') //south_texture;
-        {
-            printf("SO\n");
-        }
-        else if (line[i] == 'W' && line[++i] == 'E' && line[++i] == ' ') //west_texture;
-        {
-            printf("WE\n");
-        }
-        else if (line[i] == 'E' && line[++i] == 'A' && line[++i] == ' ') //east_texture;
-        {
-            printf("EA\n");
-        }
-        else if (line[i] == 'S' && line[++i] == ' ') //sprite_texture;
-        {
-            printf("S\n");
-        }
-        else if (line[i] == 'F' && line[++i] == ' ') //floor_color;
-        {
-            params->floor_color = define_color(line, params);
-            printf("F_color: %d\n", params->floor_color);
-        }
-        else if (line[i] == 'C' && line[++i] == ' ') //ceilling_color;
-        {
-            params->ceilling_color = define_color(line, params);
-            printf("C_color: %d\n", params->ceilling_color);
-        }
-        // else if (line[i] == ' ' || line[i] == '1')
-        // {
-        //     if ((check_map(line) == 0))
-
-        // }
-        else
-            return ;
+        printf("R ");
+        all->params->settings += 1;
+        define_resolution(line, all->params);
     }
+    else if (ft_strnstr(line, "NO ", len))
+    {
+        all->params->settings += 1;
+        printf("NO ");
+        define_textures(line, all->params);
+    }
+    else if (ft_strnstr(line, "SO ", len))
+    {
+        all->params->settings += 1;
+        printf("SO ");
+        define_textures(line, all->params);
+    }
+    else if (ft_strnstr(line, "WE ", len))
+    {
+        all->params->settings += 1;
+        printf("WE ");
+        define_textures(line, all->params);
+    }
+    else if (ft_strnstr(line, "EA ", len))
+    {
+        all->params->settings += 1;
+        printf("EA ");
+        define_textures(line, all->params);
+    }
+    else if (ft_strnstr(line, "S ", len))
+    {
+        all->params->settings += 1;
+        printf("S\n");
+    }
+    else if (ft_strnstr(line, "F ", len))
+    {
+        all->params->settings += 1;
+        all->params->floor_color = define_color(line, all->params);
+        printf("F_color: %d\n", all->params->floor_color);
+    }
+    else if (ft_strnstr(line, "C ", len))
+    {
+        all->params->settings += 1;
+        all->params->ceilling_color = define_color(line, all->params);
+        printf("C_color: %d\n", all->params->ceilling_color);
+    }
+    else if (*line == '\0')
+    {
+        if (all->params->map_start == 1)
+        {
+            all->params->error = 2;
+            error_close(all->params);
+        }
+        printf("\n");
+    }
+    else if (all->params->settings == 8)
+    {
+        all->params->map_start = 1;
+        while (line[i])
+        {
+            if (ft_strchr(" 102WNES", line[i]) > 0)
+                i++;
+            else
+            {
+                all->params->error = 4;
+                error_close(all->params);
+            }
+        }
+    }
+    else if (all->params->settings != 8)
+    {
+        all->params->error = 3;
+        error_close(all->params);
+    }
+    else
+        return ;
 }
-
-//проверить символы карты
-//посчитать количество строк
-//сделать флаг наличия ирока
-//проверить, что в карте нет пустых строк
-//проверить, что после карты в файле ничего больше нет
