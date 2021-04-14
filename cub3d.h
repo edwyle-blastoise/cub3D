@@ -45,6 +45,7 @@ typedef struct  s_params
     char        *south_texture;
     char        *west_texture;
     char        *east_texture;
+    char        *sprite_path;
     int         fd;
     char        **map;
     int         map_start;
@@ -97,5 +98,6 @@ void    check_map(t_all *all);
 void    error_close(t_params *params);
 // void    check_arg_name(char *argv1, t_params *params);
 // void    check_player(t_all *all, char *line);
+void    make_rectangle_map(t_all *all);
 
 #endif

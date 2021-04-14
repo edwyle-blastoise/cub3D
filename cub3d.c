@@ -112,13 +112,13 @@ void error_close(t_params *params)
     if (params->error == 1)
         printf("Error\nInvalid file name\n");
     else if (params->error == 2)
-        printf("Error\nMap has empty line(s)");
+         printf("Error\nInvalid parameter");
     else if (params->error == 3)
         printf("Error\nIncorrect number of parameters");
     else if (params->error == 4)
-        printf("Error\nNot valid map\n");
-    else if (params->error == 5)
         printf("Error\nThere must be one player on the map");
+    else if (params->error == 5)
+       printf("Error\nNot valid map\n");
     else if (params->error == 6)
         printf("Error\nResolution must have two int value");
     else if (params->error == 7)
@@ -126,7 +126,7 @@ void error_close(t_params *params)
     else if (params->error == 8)
         printf("Error\nColors must be in range [0,255]");
     else if (params->error == 9)
-        printf("Error\nInvalid parameter");
+        printf("Error\nSpaces in the map");
     // free all malloc
     close (params->fd);
     free (params->map);
@@ -164,21 +164,21 @@ int     main(int argc, char **argv)
     }
     else
         printf("Need a map");
-    init_player(&all);
-    data.mlx = mlx_init();
-    data.win = mlx_new_window(data.mlx, params.width, params.height, "Hello world!");
-    data.img = mlx_new_image(data.mlx, params.width, params.height);
-    data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-    draw_floor_and_ceiling(&all);
-    draw_map(&all);
-    // draw_player(&all);
-    // ft_cast_ray(&all);
-    ft_cast_rays(&all);
-    mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
-    mlx_hook(data.win, 2, 1L<<0, key_press, &all);
-    mlx_hook(data.win, 17, 1L<<0, exit_cub, &all);
-    // mlx_loop_hook(data.mlx, key_press, &all);
-    mlx_loop(data.mlx);
+    // init_player(&all);
+    // data.mlx = mlx_init();
+    // data.win = mlx_new_window(data.mlx, params.width, params.height, "Hello world!");
+    // data.img = mlx_new_image(data.mlx, params.width, params.height);
+    // data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+    // draw_floor_and_ceiling(&all);
+    // draw_map(&all);
+    // // draw_player(&all);
+    // // ft_cast_ray(&all);
+    // ft_cast_rays(&all);
+    // mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+    // mlx_hook(data.win, 2, 1L<<0, key_press, &all);
+    // mlx_hook(data.win, 17, 1L<<0, exit_cub, &all);
+    // // mlx_loop_hook(data.mlx, key_press, &all);
+    // mlx_loop(data.mlx);
     // else if (argc == 3)
     // {
         

@@ -49,20 +49,32 @@ int     define_color(char *line, t_params *params)
     char        **rgb;
     int         color;
     int         i;
+    int         j;
 
     str_color = NULL;
     rgb = NULL;
     color = 0;
     i = 0;
+    j = 0;
     str_color = ft_split(line, ' ');
     while (str_color[i])
         i++;
     if (i == 2)
     {
         rgb = ft_split(str_color[1], ',');
-        params->r = ft_atoi(rgb[0]);
-        params->g = ft_atoi(rgb[1]);
-        params->b = ft_atoi(rgb[2]);
+        while (rgb[j])
+            j++;
+        if (j == 3)
+        {
+            params->r = ft_atoi(rgb[0]);
+            params->g = ft_atoi(rgb[1]);
+            params->b = ft_atoi(rgb[2]);
+        }
+        else
+        {
+            params->error = 7;
+            error_close(params);
+        }
     }
     else if (i == 4)
     {
@@ -110,10 +122,12 @@ void    define_textures(char *line, t_params *params)
             params->west_texture = textures[1];
         else if ((ft_strcmp(textures[0], "EA") == 0))
             params->east_texture = textures[1];
+        else if ((ft_strcmp(textures[0], "S") == 0))
+            params->sprite_path = textures[1];
     }
     else
     {
-        params->error = 9;
+        params->error = 2;
         error_close(params);
     }
     printf("%s\n", textures[1]);
@@ -159,7 +173,8 @@ void    parser(char *line, t_all *all)
     else if (ft_strnstr(line, "S ", len))
     {
         all->params->settings += 1;
-        printf("S\n");
+        printf("S ");
+        define_textures(line, all->params);
     }
     else if (ft_strnstr(line, "F ", len))
     {
@@ -177,29 +192,23 @@ void    parser(char *line, t_all *all)
     {
         if (all->params->map_start == 1)
         {
-            all->params->error = 2;
+            all->params->error = 5;
             error_close(all->params);
         }
         printf("\n");
     }
-    else if (all->params->settings == 8)
+    else if ((all->params->settings == 8) && (all->params->map_start == 1))
     {
-        all->params->map_start = 1;
         while (line[i])
         {
             if (ft_strchr(" 102WNES", line[i]) > 0)
                 i++;
             else
             {
-                all->params->error = 4;
+                all->params->error = 5;
                 error_close(all->params);
             }
         }
-    }
-    else if (all->params->settings != 8)
-    {
-        all->params->error = 3;
-        error_close(all->params);
     }
     else
         return ;
