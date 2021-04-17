@@ -35,8 +35,8 @@ void	ft_cast_rays(t_all *all)
     double      end; 
 
     ray = *all->plr; // задаем координаты и направление луча равные координатам игрока
-    start = ray.direction - M_PI_4; // начало веера лучей
-    end = ray.direction + M_PI_4; // край веера лучей
+    start = ray.direction - M_PI_4; // начало веера лучей (-45град)
+    end = ray.direction + M_PI_4; // край веера лучей (+45град)
   while (start <= end)
 	{
 		ray.x = all->plr->x * SCALE + SCALE/2; // каждый раз возвращаемся в точку начала
@@ -63,63 +63,118 @@ void	ft_cast_rays(t_all *all)
 //         return (0);
 // }
 
-// double  horizont_cross(t_all *all)
+double  horizont_cross(t_all *all)
+{
+    double  new_x;
+    double  new_y;
+    int  	delta_x;
+    int  	delta_y;
+	double	ray_len;
+
+	new_x = 0;
+	new_y = 0;
+	ray_len = INFINITY;
+	if (sin(all->plr->direction) == 0)
+		return (ray_len);
+	else if (sin(all->plr->direction) < 0)
+	{
+		delta_y = -1;
+		new_y = (int)all->plr->y;
+	}
+	else if (sin(all->plr->direction) > 0)
+	{
+		delta_y = 1;
+		new_y = (int)all->plr->y + 1;
+	}
+	delta_x = 1 / tan(all->plr->direction);
+	new_x = all->plr->x + (new_y - all->plr->y) * delta_x;
+	while (new_y > 0 && new_y < all->params->strings)
+	{
+		if (new_x < 0 || new_x >= all->params->string_len)
+			break ;
+		if (all->params->map[(int)new_y - (delta_y == -1 ? 1 : 0)][(int)new_x] == '1')
+		{
+			ray_len = (new_y - all->plr->y) / sin(all->plr->direction);
+			break ;
+		}
+		new_y += delta_y;
+		new_x += delta_x * delta_y;
+	}
+	// printf("horizont_cross: new_y %lf, new_x %lf\n", new_y, new_x);
+    return (ray_len);
+}
+
+double  vertical_cross(t_all *all)
+{
+	double  new_x;
+    double  new_y;
+    int  	delta_x;
+    int  	delta_y;
+	double	ray_len;
+
+	new_x = 0;
+	new_y = 0;
+	ray_len = INFINITY;
+	if (cos(all->plr->direction) == 0)
+		return (ray_len);
+	else if (cos(all->plr->direction) > 0)
+	{
+		delta_x = 1;
+		new_x = (int)all->plr->x + 1; 
+	}
+	else if (cos(all->plr->direction) < 0)
+	{
+		delta_x = -1;
+		new_x = (int)all->plr->x;
+	}
+	delta_y = tan(all->plr->direction);
+	new_y = all->plr->y + (new_x - all->plr->x) * delta_y;
+	while (new_x > 0 && new_x < all->params->string_len)
+	{
+		if (new_y < 0 || new_y >= all->params->strings)
+			break ;
+		if (all->params->map[(int)new_y][(int)new_x - (delta_x == -1 ? 1 : 0)] == '1')
+		{
+			ray_len = (new_x - all->plr->x) / cos(all->plr->direction);
+			break ;
+		}
+		new_y += delta_x * delta_y;
+		new_x += delta_x;
+	}
+	printf("vertical_cross: new_y %lf, new_x %lf\n", new_y, new_x);
+	printf("Angle: %lf\n", all->plr->direction);
+    return (ray_len);
+}
+
+void    cast_rays(t_all *all)
+{
+	horizont_cross(all);
+    vertical_cross(all);
+    // double  start;
+    // double  end;
+    // double  step;
+    // double  dist_h;
+    // double  dist_v;
+    // int     i;
+
+    // start = all->plr->direction - M_PI_4; // 45 град
+    // end = all->plr->direction + M_PI_4;
+    // i = 0;
+    // while (start > end)
+    // {
+    //     dist_h = horizont_cross(all);
+    //     dist_v = vertical_cross(all);
+    //     if (dist_h < dist_v)
+    //         draw_wall(all);
+    //     else
+    //         dra_wall();
+    //     start -= step;
+    //     i++;
+    // }
+	// mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
+}
+
+// void	draw_wall(t_all *all)
 // {
-//     double  x;
-//     double  y;
-//     double  step_x;
-//     double  step_y;
-//     int     cross_status;
 
-//     step_y = SCALE;
-//     step_x = SCALE / tan(all->plr->direction);
-//     if (all->plr->direction > 270 && all->plr->direction < 360)
-//     {
-//         y = (int)all->plr->y / 40 * 40 - 0.01;
-//         step_y = -step_y;
-//     }
-//     else
-//     {
-//         y = (int)all->plr->y / 40 * 40 + 40;
-//         step_x = -step_x;
-//     }
-//     x = all->plr->x + (all->plr->y - y) / tan(all->plr->direction);
-//     while ((cross_status = search_cross(all, x, y)) == 0)
-//     {
-//         x += step_x;
-//         y += step_y;
-//     }
-//     // if (cross_status == -1)
-//     //     return (10000000);
-//     return (); //формула нахождения расстояния между двух точек
-// }
-
-// double  vertical_cross(t_all *all)
-// {
-
-// }
-
-// void    cast_rays(t_all *all)
-// {
-//     double  start;
-//     double  end;
-//     double  step;
-//     double  dist_h;
-//     double  dist_v;
-//     int     i;
-
-//     start = all->plr->direction - M_PI_4; // 45 град
-//     end = all->plr->direction + M_PI_4;
-//     i = 0;
-//     while (start > end)
-//     {
-//         dist_h = horizont_crosst(all);
-//         dist_v = vertical_cross(all);
-//         if (dist_h < dist_v)
-//             draw_wall();
-//         else
-//             dra_wall();
-//         start -= step;
-//         i++;
-//     }
 // }

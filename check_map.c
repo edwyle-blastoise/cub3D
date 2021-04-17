@@ -60,44 +60,31 @@ void    check_player(t_all *all, char *line)
     }
 }
 
-void    check_close_map(t_all *all)
+void    check_close_map(t_all *all, int len, int i)
 {
-    int     i;
     int     j;
-    int     length;
-    int     strings;
 
-    i = 0;
-    strings = 0;
-    while (all->params->map[i])
+    j = 0;
+    while (j < len)
     {
-        if (ft_strchr(all->params->map[i], '1'))
-            strings++;
-        i++;
-    }
-    i = 0;
-    while (++i < strings)
-    {
-        j = 0;
-        length = ft_strlen(all->params->map[i]);
-        while (++j < length)
+        if (all->params->map[i][j + 1] != ' ')
+            all->params->string_len++;
+        if ((all->params->map[i][j] != '1') && (all->params->map[i][j] != ' '))
         {
-            if ((all->params->map[i][j] != '1') && (all->params->map[i][j] != ' '))
+            if ((all->params->map[i][j - 1] == ' ') \
+            || (all->params->map[i][j + 1] == ' ') \
+            || (all->params->map[i + 1][j] == ' ') \
+            || (all->params->map[i + 1][j + 1] == ' ') \
+            || (all->params->map[i + 1][j - 1] == ' ') \
+            || (all->params->map[i - 1][j] == ' ') \
+            || (all->params->map[i - 1][j + 1] == ' ') \
+            || (all->params->map[i - 1][j - 1] == ' '))
             {
-                if ((all->params->map[i][j - 1] == ' ') \
-                || (all->params->map[i][j + 1] == ' ') \
-                || (all->params->map[i + 1][j] == ' ') \
-                || (all->params->map[i + 1][j + 1] == ' ') \
-                || (all->params->map[i + 1][j - 1] == ' ') \
-                || (all->params->map[i - 1][j] == ' ') \
-                || (all->params->map[i - 1][j + 1] == ' ') \
-                || (all->params->map[i - 1][j - 1] == ' '))
-                {
-                    all->params->error = 9;
-                    error_close(all->params);
-                }
+                all->params->error = 9;
+                error_close(all->params);
             }
         }
+        j++;
     }
 }
 
@@ -106,22 +93,32 @@ void     check_map(t_all *all)
     int     i;
     int     j;
     int     len;
-    int     num_of_strings;
 
     i = 0;
-    num_of_strings = 0;
     while (all->params->map[i])
-         i++;
-    num_of_strings = i - 1;
+    {
+        if (ft_strchr(all->params->map[i], '1'))
+            all->params->strings++;
+        else
+        {
+            all->params->error = 5;
+            error_close(all->params);
+        }
+        i++;
+    }
+    printf("num_of_strings: %d\n", all->params->strings);
     i = 0;
     while (all->params->map[i])
     {
         j = 0;
         len = ft_strlen(all->params->map[i]);
-        if (i == 0 || i == num_of_strings)
+        all->params->string_len = 0;
+        if (i == 0 || i == all->params->strings)
         {
             while (j < len)
             {
+                if (all->params->map[i][j] == '1' && (all->params->map[i][j + 1] != ' '))
+                    all->params->string_len++;
                 if (all->params->map[i][j] != '1' && all->params->map[i][j] != ' ')
                 {
                     all->params->error = 5;
@@ -130,10 +127,12 @@ void     check_map(t_all *all)
                 j++;
             }
         }
+        else
+            check_close_map(all, len, i);
         check_player(all, all->params->map[i]);
+        printf("string_len: %d\n", all->params->string_len);
         i++;
     }
-    check_close_map(all);
     if (all->params->plr_found != 1)
     {
         all->params->error = 4;

@@ -25,6 +25,8 @@ void    params_init(t_params *params)
     params->ceilling_color = 0;
     params->floor_color = 0;
     params->map_start = 0;
+    params->strings = 0;
+    params->string_len = 0;
     params->plr_found = 0;
     params->error = 0;
 }

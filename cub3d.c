@@ -73,6 +73,7 @@ int    key_press(int key, t_all *all)
         // draw_player(all);
         // ft_cast_ray(all);
         ft_cast_rays(all);
+        cast_rays(all);
         mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
     }
     return (0);
@@ -164,21 +165,22 @@ int     main(int argc, char **argv)
     }
     else
         printf("Need a map");
-    // init_player(&all);
-    // data.mlx = mlx_init();
-    // data.win = mlx_new_window(data.mlx, params.width, params.height, "Hello world!");
-    // data.img = mlx_new_image(data.mlx, params.width, params.height);
-    // data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-    // draw_floor_and_ceiling(&all);
-    // draw_map(&all);
-    // // draw_player(&all);
-    // // ft_cast_ray(&all);
-    // ft_cast_rays(&all);
-    // mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
-    // mlx_hook(data.win, 2, 1L<<0, key_press, &all);
-    // mlx_hook(data.win, 17, 1L<<0, exit_cub, &all);
-    // // mlx_loop_hook(data.mlx, key_press, &all);
-    // mlx_loop(data.mlx);
+    init_player(&all);
+    data.mlx = mlx_init();
+    data.win = mlx_new_window(data.mlx, params.width, params.height, "Hello world!");
+    data.img = mlx_new_image(data.mlx, params.width, params.height);
+    data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+    draw_floor_and_ceiling(&all);
+    draw_map(&all);
+    // draw_player(&all);
+    // ft_cast_ray(&all);
+    ft_cast_rays(&all);
+    cast_rays(&all);
+    mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+    mlx_hook(data.win, 2, 1L<<0, key_press, &all);
+    mlx_hook(data.win, 17, 1L<<0, exit_cub, &all);
+    // mlx_loop_hook(data.mlx, key_press, &all);
+    mlx_loop(data.mlx);
     // else if (argc == 3)
     // {
         

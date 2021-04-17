@@ -48,6 +48,8 @@ typedef struct  s_params
     char        *sprite_path;
     int         fd;
     char        **map;
+    int         strings;
+    int         string_len;
     int         map_start;
     int         plr_found;
     int         error;
@@ -99,5 +101,6 @@ void    error_close(t_params *params);
 // void    check_arg_name(char *argv1, t_params *params);
 // void    check_player(t_all *all, char *line);
 void    make_rectangle_map(t_all *all);
+void    cast_rays(t_all *all);
 
 #endif
