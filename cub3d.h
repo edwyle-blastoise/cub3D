@@ -18,7 +18,7 @@
 #include "libft/libft.h"
 #include "gnl/get_next_line.h"
 #include "minilibx_opengl/mlx.h"
-#define SCALE 20
+#define SCALE 15
 #define ENTER 36
 #define ESC 53
 #define W 13
@@ -48,11 +48,12 @@ typedef struct  s_params
     char        *sprite_path;
     int         fd;
     char        **map;
-    int         strings;
-    int         string_len;
+    int         map_height;
+    int         map_width;
     int         map_start;
     int         plr_found;
     int         error;
+    double      wall_height;
 }               t_params;
 
 typedef struct s_player
@@ -102,5 +103,6 @@ void    error_close(t_params *params);
 // void    check_player(t_all *all, char *line);
 void    make_rectangle_map(t_all *all);
 void    cast_rays(t_all *all);
+void    draw_cub(t_all *all, int x);
 
 #endif

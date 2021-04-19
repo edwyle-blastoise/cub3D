@@ -25,8 +25,8 @@ void    params_init(t_params *params)
     params->ceilling_color = 0;
     params->floor_color = 0;
     params->map_start = 0;
-    params->strings = 0;
-    params->string_len = 0;
+    params->map_height = 0;
+    params->map_width = 0;
     params->plr_found = 0;
     params->error = 0;
 }
@@ -90,6 +90,7 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char    *dst;
 
+    dst = NULL;
     dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 }
@@ -126,8 +127,8 @@ void    draw_map(t_all *all)
         {
             if (all->params->map[y][x] == '1')
                 scale_map(all->data, x, y, 0xFFFFFF);
-            else
-                scale_map(all->data, x, y, all->params->ceilling_color);
+            // else
+            //     scale_map(all->data, x, y, all->params->ceilling_color);
             x++;
         }
         y++;

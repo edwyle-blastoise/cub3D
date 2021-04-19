@@ -32,38 +32,32 @@ void	ft_cast_rays(t_all *all)
 {
 	t_player	ray;
 	double      start; 
-    double      end; 
+    double      end;
+	int			x;
 
     ray = *all->plr; // задаем координаты и направление луча равные координатам игрока
-    start = ray.direction - M_PI_4; // начало веера лучей (-45град)
-    end = ray.direction + M_PI_4; // край веера лучей (+45град)
-  while (start <= end)
+    start = ray.direction - M_PI / 6; // начало веера лучей (-30град)
+    end = ray.direction + M_PI / 6; // край веера лучей (+30град)
+	x = 0;
+  	while (start <= end)
 	{
-		ray.x = all->plr->x * SCALE + SCALE/2; // каждый раз возвращаемся в точку начала
-		ray.y = all->plr->y * SCALE + SCALE/2;
-		while (all->params->map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
+		ray.x = all->plr->x * SCALE; // каждый раз возвращаемся в точку начала
+		ray.y = all->plr->y * SCALE;
+		while (all->params->map[(int)(ray.y) / SCALE][(int)(ray.x) / SCALE] != '1')
 		{
 			ray.x += cos(start);
 			ray.y += sin(start);
 			my_mlx_pixel_put(all->data, ray.x, ray.y, 0x990099);
 		}
-	    start += M_PI_2 / 100; //[угол обзора] / [количество лучей];
+		// all->params->len_ray = hypotf(ray.x - all->plr->x, ray.y - all->plr->y) * cosf(start - all->plr->direction);
+		// all->params->wall_height = (all->params->height / all->params->len_ray);
+		// draw_cub(all, x);
+	    start += M_PI / 3 / all->params->width; //[угол обзора] / [количество лучей];
+		x++;
 	}
 }
 
-// int     search_cross(t_all *all, double x, double y)
-// {
-//     x = (int)x / SCALE;
-//     y = (int)y / SCALE;
-//     if (all->params->map[(int)y][(int)x] == ' ')
-//         return (-1);
-//     else if (all->params->map[(int)y][(int)x] == '1')
-//         return (1);
-//     else
-//         return (0);
-// }
-
-double  horizont_cross(t_all *all)
+double  horizont_cross(t_all *all, double angle)
 {
     double  new_x;
     double  new_y;
@@ -74,37 +68,36 @@ double  horizont_cross(t_all *all)
 	new_x = 0;
 	new_y = 0;
 	ray_len = INFINITY;
-	if (sin(all->plr->direction) == 0)
-		return (ray_len);
-	else if (sin(all->plr->direction) < 0)
+	if (sin(angle) < 0)
 	{
 		delta_y = -1;
 		new_y = (int)all->plr->y;
 	}
-	else if (sin(all->plr->direction) > 0)
+	else if (sin(angle) >= 0)
 	{
 		delta_y = 1;
 		new_y = (int)all->plr->y + 1;
 	}
-	delta_x = 1 / tan(all->plr->direction);
-	new_x = all->plr->x + (new_y - all->plr->y) * delta_x;
-	while (new_y > 0 && new_y < all->params->strings)
+	delta_x = 1 / tan(angle);
+	new_x = all->plr->x + (new_y - all->plr->y) / sin(angle) * cos(angle);
+	while (new_y > 0 && new_y < all->params->map_height)
 	{
-		if (new_x < 0 || new_x >= all->params->string_len)
+		if (new_x < 0 || new_x >= all->params->map_width)
 			break ;
 		if (all->params->map[(int)new_y - (delta_y == -1 ? 1 : 0)][(int)new_x] == '1')
 		{
-			ray_len = (new_y - all->plr->y) / sin(all->plr->direction);
+			ray_len = (new_y - all->plr->y) / sin(angle);
 			break ;
 		}
 		new_y += delta_y;
-		new_x += delta_x * delta_y;
+		new_x += (delta_y / sin(angle)) * cos(angle);
+		// printf("X %lf\n", new_x);
+		// printf("Y %lf\n", new_y);
 	}
-	// printf("horizont_cross: new_y %lf, new_x %lf\n", new_y, new_x);
-    return (ray_len);
+    return (fabs(ray_len));
 }
 
-double  vertical_cross(t_all *all)
+double  vertical_cross(t_all *all, double angle)
 {
 	double  new_x;
     double  new_y;
@@ -115,66 +108,66 @@ double  vertical_cross(t_all *all)
 	new_x = 0;
 	new_y = 0;
 	ray_len = INFINITY;
-	if (cos(all->plr->direction) == 0)
-		return (ray_len);
-	else if (cos(all->plr->direction) > 0)
+	if (cos(angle) >= 0)
 	{
 		delta_x = 1;
 		new_x = (int)all->plr->x + 1; 
 	}
-	else if (cos(all->plr->direction) < 0)
+	else if (cos(angle) < 0)
 	{
 		delta_x = -1;
 		new_x = (int)all->plr->x;
 	}
-	delta_y = tan(all->plr->direction);
-	new_y = all->plr->y + (new_x - all->plr->x) * delta_y;
-	while (new_x > 0 && new_x < all->params->string_len)
+	delta_y = tan(angle);
+	new_y = all->plr->y + (new_x - all->plr->x) / cos(angle) * sin(angle);
+	while (new_x >= 0 && new_x < all->params->map_width)
 	{
-		if (new_y < 0 || new_y >= all->params->strings)
+		if (new_y < 0 || new_y >= all->params->map_height)
 			break ;
 		if (all->params->map[(int)new_y][(int)new_x - (delta_x == -1 ? 1 : 0)] == '1')
 		{
-			ray_len = (new_x - all->plr->x) / cos(all->plr->direction);
+			ray_len = (new_x - all->plr->x) / cos(angle);
 			break ;
 		}
-		new_y += delta_x * delta_y;
+		new_y += (delta_x / cos(angle)) * sin(angle);
 		new_x += delta_x;
+		// printf("X_2 %lf\n", new_x);
+		// printf("Y_2 %lf\n", new_y);
 	}
-	printf("vertical_cross: new_y %lf, new_x %lf\n", new_y, new_x);
-	printf("Angle: %lf\n", all->plr->direction);
-    return (ray_len);
+    return (fabs(ray_len));
 }
 
 void    cast_rays(t_all *all)
 {
-	horizont_cross(all);
-    vertical_cross(all);
-    // double  start;
-    // double  end;
-    // double  step;
-    // double  dist_h;
-    // double  dist_v;
-    // int     i;
+    double  start;
+    double  end;
+    double  step;
+    double  dist_h;
+    double  dist_v;
+    int     i;
 
-    // start = all->plr->direction - M_PI_4; // 45 град
-    // end = all->plr->direction + M_PI_4;
-    // i = 0;
-    // while (start > end)
-    // {
-    //     dist_h = horizont_cross(all);
-    //     dist_v = vertical_cross(all);
-    //     if (dist_h < dist_v)
-    //         draw_wall(all);
-    //     else
-    //         dra_wall();
-    //     start -= step;
-    //     i++;
-    // }
-	// mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
+    start = all->plr->direction - M_PI / 6; // -30град FOV 60 град
+    end = all->plr->direction + M_PI / 6; // +30град 
+	step = M_PI / 3 / all->params->width;
+    i = 0;
+    while (start < end)
+    {
+        dist_h = horizont_cross(all, start) * cos(start - all->plr->direction);
+        dist_v = vertical_cross(all, start) * cos(start - all->plr->direction);
+		printf("Ray_H: %lf\n", dist_h);
+		printf("Ray_V: %lf\n\n", dist_v);
+        if (dist_h < dist_v)
+		{
+			all->params->wall_height = (all->params->height / dist_h);
+            draw_cub(all, i);
+		}
+        else
+		{
+			all->params->wall_height = (all->params->height / dist_v);
+            draw_cub(all, i);
+		}
+        start += step;
+        i++;
+    }
+	mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
 }
-
-// void	draw_wall(t_all *all)
-// {
-
-// }
