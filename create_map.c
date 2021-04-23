@@ -95,16 +95,6 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-// int    pixel_take(t_all *all, int x, int y, int color)
-// {
-//     char    *dst;
-
-//     dst = NULL;
-//     dst = all->text[0].texture_addr + (y * all->text[0].texture_line_length + x * (all->text[0].texture_bpp / 8));
-//     *(unsigned int*)dst = color;
-//     return (color);
-// }
-
 void    scale_map(t_data  *data, int x, int y, int color)
 {
     int x_end;
