@@ -171,12 +171,13 @@ void    cast_rays(t_all *all)
         if (dist_h < dist_v)
 		{
 			all->params->wall_height = (all->params->height / dist_h);
-            draw_3d(all, i, 'h'); //'h'
+            draw_wall(all, all->params->dir_h); //'h'
 		}
         else
 		{
 			all->params->wall_height = (all->params->height / dist_v);
-            draw_3d(all, i, 'v'); //'v'
+			draw_wall(all, all->params->dir_v);
+            // draw_3d(all, i, 'v'); //'v'
 		}
         start += step;
         i++;

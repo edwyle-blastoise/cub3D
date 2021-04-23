@@ -123,7 +123,7 @@ void    define_textures(char *line, t_params *params)
         else if ((ft_strcmp(textures[0], "EA") == 0))
             params->east_texture = textures[1];
         else if ((ft_strcmp(textures[0], "S") == 0))
-            params->sprite_path = textures[1];
+            params->sprite_texture = textures[1];
     }
     else
     {

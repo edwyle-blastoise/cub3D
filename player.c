@@ -62,5 +62,4 @@ void    draw_player(t_all *all)
         x -= SCALE;
         y++;
     }
-    // scale_map(all->data, all->plr->x, all->plr->y, 0x00FF00);
 }
