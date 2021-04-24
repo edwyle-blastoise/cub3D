@@ -20,12 +20,11 @@ void    draw_wall(t_all *all, int x, int y, int side)
     int     dy;
     double  y_offset;
     double  step;
-
+ 
     dx = 0;
     dy = 0;
     step = (double)all->text[side].texture_height / all->params->wall_height;
     y_offset = 0;
-
     if (all->params->wall_height > all->params->height)
     {
         y_offset = (all->params->wall_height - all->params->height) / 2;
@@ -35,6 +34,8 @@ void    draw_wall(t_all *all, int x, int y, int side)
     if (y_offset > 0)
         dy = step * y_offset;
     my_mlx_pixel_put(all->data, x, y, pixel_take(all, dx, dy, side, step));
+    if ((dy + step) < all->text[side].texture_width)
+        dy = dy + step;
 }
 
 void    draw_floor_and_ceiling(t_all *all, int x, int side)

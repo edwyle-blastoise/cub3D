@@ -54,8 +54,8 @@ typedef struct  s_params
     int         plr_found;
     int         error;
     double      wall_height;
-    char        dir_h;
-    char        dir_v;
+    int        dir_h;
+    int        dir_v;
     int		    hit_x;
     int		    hit_y;
 }               t_params;

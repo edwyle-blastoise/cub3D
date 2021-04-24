@@ -7,8 +7,8 @@ void	buff_textures(t_all *all)
     i = 0;
     all->text[0].texture_path = all->params->north_texture;
 	all->text[1].texture_path = all->params->south_texture;
-	all->text[2].texture_path = all->params->east_texture;
-	all->text[3].texture_path = all->params->west_texture;
+	all->text[2].texture_path = all->params->west_texture;
+	all->text[3].texture_path = all->params->east_texture;
 	all->text[4].texture_path = all->params->sprite_texture;
     while (i < 5)
     {

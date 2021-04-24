@@ -68,15 +68,17 @@ double  horizont_cross(t_all *all, double angle)
 	new_x = 0;
 	new_y = 0;
 	ray_len = INFINITY;
+	all->params->dir_h = 0;
+	all->params->dir_v = 0;
 	if (sin(angle) < 0)
 	{
-		all->params->dir_h = 0; //'S'
+		all->params->dir_h = 0; //'N'
 		delta_y = -1;
 		new_y = (int)all->plr->y;
 	}
 	else if (sin(angle) >= 0)
 	{
-		all->params->dir_h = 1; //'N'
+		all->params->dir_h = 1; //'S'
 		delta_y = 1;
 		new_y = (int)all->plr->y + 1;
 	}
@@ -93,8 +95,6 @@ double  horizont_cross(t_all *all, double angle)
 		}
 		new_y += delta_y;
 		new_x += (delta_y / sin(angle)) * cos(angle);
-		// printf("X %lf\n", new_x);
-		// printf("Y %lf\n", new_y);
 	}
 	if (sin(angle) >= 0)
 		all->params->hit_x = 1 - (new_x - (int)new_x);
@@ -139,8 +139,6 @@ double  vertical_cross(t_all *all, double angle)
 		}
 		new_y += (delta_x / cos(angle)) * sin(angle);
 		new_x += delta_x;
-		// printf("X_2 %lf\n", new_x);
-		// printf("Y_2 %lf\n", new_y);
 	}
 	if (cos(angle) < 0)
 		all->params->hit_y = 1 - (new_y - (int)new_y);
@@ -153,7 +151,7 @@ void    cast_rays(t_all *all)
 {
     double  start;
     double  end;
-    double  step;
+    double  step; 
     double  dist_h;
     double  dist_v;
     int     i;
@@ -170,7 +168,7 @@ void    cast_rays(t_all *all)
 		{
 			all->params->wall_height = (all->params->height / dist_h);
 			draw_floor_and_ceiling(all, i, all->params->dir_h);
-            // draw_wall(all, all->params->dir_h); //'h'
+            // draw_wall(all, all->params->dir_h);
 		}
         else
 		{
@@ -181,5 +179,4 @@ void    cast_rays(t_all *all)
         start += step;
         i++;
     }
-	// mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
 }
