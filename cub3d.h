@@ -98,7 +98,7 @@ typedef struct  s_all
     t_image     text[5];
 }               t_all;
 
-void    draw_floor_and_ceiling(t_all *all);
+void    draw_floor_and_ceiling(t_all *all, int x, int side);
 // void    params_init(t_params *params);
 // void    define_resolution(char *line, t_params *params);
 int     create_trgb(int r, int g, int b);
@@ -121,10 +121,9 @@ void    error_close(t_params *params);
 // void    check_player(t_all *all, char *line);
 void    make_rectangle_map(t_all *all);
 void    cast_rays(t_all *all);
-void    draw_wall(t_all *all, char side);
+void    draw_wall(t_all *all, int x, int y, int side);
 void	buff_textures(t_all *all);
-// int    pixel_take(t_all *all, int x, int y, int color);
-int    pixel_take(t_all *all, int x, int y, char side, double step);
+int     pixel_take(t_all *all, int x, int y, int side, double step);
 
 
 #endif

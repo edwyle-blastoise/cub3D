@@ -70,13 +70,13 @@ double  horizont_cross(t_all *all, double angle)
 	ray_len = INFINITY;
 	if (sin(angle) < 0)
 	{
-		all->params->dir_h = 'S';
+		all->params->dir_h = 0; //'S'
 		delta_y = -1;
 		new_y = (int)all->plr->y;
 	}
 	else if (sin(angle) >= 0)
 	{
-		all->params->dir_h = 'N';
+		all->params->dir_h = 1; //'N'
 		delta_y = 1;
 		new_y = (int)all->plr->y + 1;
 	}
@@ -116,13 +116,13 @@ double  vertical_cross(t_all *all, double angle)
 	ray_len = INFINITY;
 	if (cos(angle) >= 0)
 	{
-		all->params->dir_v = 'E';
+		all->params->dir_v = 2; //'E'
 		delta_x = 1;
 		new_x = (int)all->plr->x + 1; 
 	}
 	else if (cos(angle) < 0)
 	{
-		all->params->dir_v = 'W';
+		all->params->dir_v = 3; //'W'
 		delta_x = -1;
 		new_x = (int)all->plr->x;
 	}
@@ -166,18 +166,17 @@ void    cast_rays(t_all *all)
     {
         dist_h = horizont_cross(all, start) * cos(start - all->plr->direction);
         dist_v = vertical_cross(all, start) * cos(start - all->plr->direction);
-		// printf("Ray_H: %lf\n", dist_h);
-		// printf("Ray_V: %lf\n\n", dist_v);
         if (dist_h < dist_v)
 		{
 			all->params->wall_height = (all->params->height / dist_h);
-            draw_wall(all, all->params->dir_h); //'h'
+			draw_floor_and_ceiling(all, i, all->params->dir_h);
+            // draw_wall(all, all->params->dir_h); //'h'
 		}
         else
 		{
 			all->params->wall_height = (all->params->height / dist_v);
-			draw_wall(all, all->params->dir_v);
-            // draw_3d(all, i, 'v'); //'v'
+			draw_floor_and_ceiling(all, i, all->params->dir_v);
+			// draw_wall(all, all->params->dir_v);
 		}
         start += step;
         i++;
