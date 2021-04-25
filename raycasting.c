@@ -166,15 +166,15 @@ void    cast_rays(t_all *all)
         dist_v = vertical_cross(all, start) * cos(start - all->plr->direction);
         if (dist_h < dist_v)
 		{
+			all->params->hit = all->params->hit_x;
 			all->params->wall_height = (all->params->height / dist_h);
-			draw_floor_and_ceiling(all, i, all->params->dir_h);
-            // draw_wall(all, all->params->dir_h);
+			draw(all, i, all->params->dir_h);
 		}
         else
 		{
+			all->params->hit = all->params->hit_y;
 			all->params->wall_height = (all->params->height / dist_v);
-			draw_floor_and_ceiling(all, i, all->params->dir_v);
-			// draw_wall(all, all->params->dir_v);
+			draw(all, i, all->params->dir_v);
 		}
         start += step;
         i++;

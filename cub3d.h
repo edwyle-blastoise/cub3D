@@ -54,10 +54,11 @@ typedef struct  s_params
     int         plr_found;
     int         error;
     double      wall_height;
-    int        dir_h;
-    int        dir_v;
-    int		    hit_x;
-    int		    hit_y;
+    int         dir_h;
+    int         dir_v;
+    double		hit_x;
+    double		hit_y;
+    double      hit;
 }               t_params;
 
 typedef struct s_image
@@ -98,7 +99,7 @@ typedef struct  s_all
     t_image     text[5];
 }               t_all;
 
-void    draw_floor_and_ceiling(t_all *all, int x, int side);
+void    draw(t_all *all, int x, int side);
 // void    params_init(t_params *params);
 // void    define_resolution(char *line, t_params *params);
 int     create_trgb(int r, int g, int b);
@@ -123,7 +124,7 @@ void    make_rectangle_map(t_all *all);
 void    cast_rays(t_all *all);
 void    draw_wall(t_all *all, int x, int y, int side);
 void	buff_textures(t_all *all);
-int     pixel_take(t_all *all, int x, int y, int side, double step);
+int    pixel_take(t_all *all, int x, int y, int side, int color);
 
 
 #endif

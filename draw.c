@@ -1,30 +1,28 @@
 #include "cub3d.h"
 
-int    pixel_take(t_all *all, int x, int y, int side, double step)
+int    pixel_take(t_all *all, int x, int y, int side, int color)
 {
     char    *dst;
-    double  text_y;
-    int     color;
     
-    color = 0;
-    text_y = (y + all->params->hit_x) * step;
     dst = NULL;
-    dst = all->text[side].texture_addr + ((int)text_y * all->text[side].texture_line_length + x * (all->text[side].texture_bpp / 8));
+    dst = all->text[side].texture_addr + ((int)y * all->text[side].texture_line_length + (int)x * (all->text[side].texture_bpp));
     color = *(unsigned int*)dst;
     return (color);
 }
 
 void    draw_wall(t_all *all, int x, int y, int side)
 {
-    int     dx;
-    int     dy;
+    double  dx;
+    double  dy;
     double  y_offset;
     double  step;
+    int     color;
  
     dx = 0;
     dy = 0;
+    color = 0;
     step = (double)all->text[side].texture_height / all->params->wall_height;
-    y_offset = 0;
+    y_offset = all->params->hit_y;
     if (all->params->wall_height > all->params->height)
     {
         y_offset = (all->params->wall_height - all->params->height) / 2;
@@ -33,12 +31,13 @@ void    draw_wall(t_all *all, int x, int y, int side)
     dx = all->text[side].texture_width * all->params->hit_x;
     if (y_offset > 0)
         dy = step * y_offset;
-    my_mlx_pixel_put(all->data, x, y, pixel_take(all, dx, dy, side, step));
+    color = pixel_take(all, dx, dy, side, color);
+    my_mlx_pixel_put(all->data, x, y, pixel_take(all, dx, dy, side, color));
     if ((dy + step) < all->text[side].texture_width)
         dy = dy + step;
 }
 
-void    draw_floor_and_ceiling(t_all *all, int x, int side)
+void    draw(t_all *all, int x, int side)
 {
     int y;
 
