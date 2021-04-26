@@ -66,7 +66,7 @@ typedef struct s_image
     int         texture_width;
     int         texture_height;
     void        *texture_img;
-    char        *texture_addr;
+    int        *texture_addr;
     int         texture_bpp;
     int         texture_line_length;
     int         texture_endian;
@@ -124,7 +124,7 @@ void    make_rectangle_map(t_all *all);
 void    cast_rays(t_all *all);
 void    draw_wall(t_all *all, int x, int y, int side);
 void	buff_textures(t_all *all);
-int    pixel_take(t_all *all, int x, int y, int side, int color);
+int    pixel_take(t_all *all, int x, int y, int side);
 
 
 #endif

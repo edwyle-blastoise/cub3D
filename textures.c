@@ -1,8 +1,9 @@
 #include "cub3d.h"
 
+
 void	buff_textures(t_all *all)
 {
-    int     i;
+    int i;
 
     i = 0;
     all->text[0].texture_path = all->params->north_texture;
@@ -13,7 +14,7 @@ void	buff_textures(t_all *all)
     while (i < 5)
     {
         all->text[i].texture_img = mlx_xpm_file_to_image(all->data->mlx, all->text[i].texture_path, &all->text[i].texture_width, &all->text[i].texture_height);
-        all->text[i].texture_addr = mlx_get_data_addr(all->text[i].texture_img, &all->text[i].texture_bpp, &all->text[i].texture_line_length, &all->text[i].texture_endian);
+        all->text[i].texture_addr = (int *)mlx_get_data_addr(all->text[i].texture_img, &all->text[i].texture_bpp, &all->text[i].texture_line_length, &all->text[i].texture_endian);
         i++;
     }
 }
