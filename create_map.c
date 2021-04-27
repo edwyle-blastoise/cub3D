@@ -29,6 +29,7 @@ void    params_init(t_params *params)
     params->map_width = 0;
     params->plr_found = 0;
     params->error = 0;
+    params->sprites = 0;
 }
 
 char    **create_map(t_list **head, int size)
@@ -127,8 +128,6 @@ void    draw_map(t_all *all)
         {
             if (all->params->map[y][x] == '1')
                 scale_map(all->data, x, y, 0xFFFFFF);
-            // else
-            //     scale_map(all->data, x, y, all->params->ceilling_color);
             x++;
         }
         y++;

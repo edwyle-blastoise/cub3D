@@ -160,6 +160,7 @@ void    cast_rays(t_all *all)
     end = all->plr->direction + M_PI / 6; // +30град 
 	step = M_PI / 3 / all->params->width;
     i = 0;
+	all->params->dist_to_wall = (double*)malloc(sizeof(double) * all->params->width + 1);
     while (start < end)
     {
         dist_h = horizont_cross(all, start) * cos(start - all->plr->direction);
@@ -168,12 +169,16 @@ void    cast_rays(t_all *all)
 		{
 			all->params->hit = all->params->hit_x;
 			all->params->wall_height = (all->params->height / dist_h);
+			all->params->dist_to_wall[i] = dist_h;
+			// printf("dist_h = %lf\n", all->params->dist_to_wall[i]);
 			draw(all, i, all->params->dir_h);
 		}
         else
 		{
 			all->params->hit = all->params->hit_y;
 			all->params->wall_height = (all->params->height / dist_v);
+			all->params->dist_to_wall[i] = dist_v;
+			// printf("dist_v = %lf\n", all->params->dist_to_wall[i]);
 			draw(all, i, all->params->dir_v);
 		}
         start += step;

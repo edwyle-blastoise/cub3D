@@ -24,8 +24,18 @@ void    define_resolution(char *line, t_params *params)
         i++;
     if (i == 3)
     {
+        if ((ft_strcmp(resolution[0], "R") != 0))
+        {
+            params->error = 2;
+            error_close(params);
+        }
         params->width = ft_atoi(resolution[1]);
         params->height = ft_atoi(resolution[2]);
+        if (params->width <= 0 || params->height <= 0)
+        {
+            params->error = 6;
+            error_close(params);
+        }
     }
     else
     {
@@ -61,6 +71,11 @@ int     define_color(char *line, t_params *params)
         i++;
     if (i == 2)
     {
+        if ((ft_strcmp(str_color[0], "F") != 0) && (ft_strcmp(str_color[0], "C") != 0))
+        {
+            params->error = 2;
+            error_close(params);
+        }
         rgb = ft_split(str_color[1], ',');
         while (rgb[j])
             j++;
@@ -75,12 +90,6 @@ int     define_color(char *line, t_params *params)
             params->error = 7;
             error_close(params);
         }
-    }
-    else if (i == 4)
-    {
-        params->r = ft_atoi(str_color[1]);
-        params->g = ft_atoi(str_color[2]);
-        params->b = ft_atoi(str_color[3]);
     }
     else
     {
@@ -124,6 +133,11 @@ void    define_textures(char *line, t_params *params)
             params->east_texture = textures[1];
         else if ((ft_strcmp(textures[0], "S") == 0))
             params->sprite_texture = textures[1];
+        else
+        {
+            params->error = 2;
+            error_close(params);
+        }
     }
     else
     {
@@ -213,3 +227,7 @@ void    parser(char *line, t_all *all)
     else
         return ;
 }
+
+
+// проверить параметры цвета на наличие строк
+// пробелы после карты вадлидны

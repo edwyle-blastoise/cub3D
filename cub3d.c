@@ -78,6 +78,7 @@ int    key_press(int key, t_all *all)
         cast_rays(all);
         draw_map(all);
         ft_cast_rays(all);
+        draw_sprites(all);
         mlx_put_image_to_window(all->data->mlx, all->data->win, all->data->img, 0, 0);
     }
     return (0);
@@ -96,13 +97,17 @@ void error_close(t_params *params)
     else if (params->error == 5)
        printf("Error\nNot valid map\n");
     else if (params->error == 6)
-        printf("Error\nResolution must have two int value");
+        printf("Error\nResolution must have two positive int value");
     else if (params->error == 7)
         printf("Error\nColors must have three int value");
     else if (params->error == 8)
         printf("Error\nColors must be in range [0,255]");
     else if (params->error == 9)
         printf("Error\nSpaces in the map");
+    else if (params->error == 10)
+        printf("Error\nTexture path error");
+    else if (params->error == 11)
+        printf("Error\nMemory error");
     // free all malloc
     close (params->fd);
     free (params->map);
@@ -141,6 +146,7 @@ int     main(int argc, char **argv)
     else
         printf("Need a map");
     init_player(&all);
+    sprites_init(&all);
     data.mlx = mlx_init();
     data.win = mlx_new_window(data.mlx, params.width, params.height, "cub3D");
     data.img = mlx_new_image(data.mlx, params.width, params.height);
@@ -152,6 +158,7 @@ int     main(int argc, char **argv)
     cast_rays(&all);
     draw_map(&all);
     ft_cast_rays(&all);
+    draw_sprites(&all);
     mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
     // mlx_put_image_to_window(data.mlx, data.win, all.text[1].texture_img, 0, 0);
     mlx_hook(data.win, 2, 1L<<0, key_press, &all);

@@ -31,27 +31,6 @@ void draw_wall(t_all * all, int x, int y, int side)
     }
  }
 
-void draw_image(t_all *all, int side)
-{
-    int i;
-    int j;
-    int color;
-
-    color = 0;
-    j = 0;
-    while(j < 64)
-    {
-        i = 0;
-        while(i < 64)
-        {
-            color = pixel_take(all, i, j, side);
-            my_mlx_pixel_put(all->data, i, j, color);
-            i++;
-        }
-        j++;
-    }
-}
-
 void    draw(t_all *all, int x, int side)
 {
     int y;
@@ -68,6 +47,5 @@ void    draw(t_all *all, int x, int side)
             my_mlx_pixel_put(all->data, x, y, all->params->floor_color);
         y++;
     }
-    draw_image(all, 4);
 }
 

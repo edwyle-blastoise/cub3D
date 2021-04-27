@@ -35,7 +35,11 @@ void    make_rectangle_map(t_all *all)
         if (len < all->params->map_width)
         {
             j = 0;
-            remainder = ft_calloc(sizeof(char*), (all->params->map_width - len) + 1);
+            if (!(remainder = ft_calloc(sizeof(char*), (all->params->map_width - len) + 1)))
+            {
+                all->params->error = 11;
+                error_close(all->params);
+            }
             while (j < (all->params->map_width - len))
             {
                 remainder[j] = ' ';
@@ -53,6 +57,8 @@ void    check_player(t_all *all, char *line)
     {
         if (*line == 'N' || *line == 'E' || *line == 'W' || *line == 'S')
             all->params->plr_found += 1;
+        else if (*line == '2')
+            all->params->sprites++;
         line++;
     }
 }

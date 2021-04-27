@@ -56,17 +56,31 @@ typedef struct  s_params
     double      wall_height;
     int         dir_h;
     int         dir_v;
+    double      *dist_to_wall;
     double		hit_x;
     double		hit_y;
     double      hit;
+    int         sprites;
 }               t_params;
+
+typedef struct s_sprites
+{
+    double      x;
+    double      y;
+    double      dist;
+    double      dir;
+    double      angle;
+    double      sprite_height;
+    double      offset_x;
+    double      offset_y;
+}               t_sprites;
 
 typedef struct s_image
 {
     int         texture_width;
     int         texture_height;
     void        *texture_img;
-    int        *texture_addr;
+    int         *texture_addr;
     int         texture_bpp;
     int         texture_line_length;
     int         texture_endian;
@@ -96,6 +110,7 @@ typedef struct  s_all
     t_params    *params;
     t_data      *data;
     t_player    *plr;
+    t_sprites   **spr;
     t_image     text[5];
 }               t_all;
 
@@ -106,6 +121,7 @@ int     create_trgb(int r, int g, int b);
 // int     define_color(char *line, t_params *params);
 void    parser(char *line, t_all *all);
 void    init_player(t_all *all);
+void    init_sprites(t_all *all);
 // void    draw_player(t_all *all);
 // void	ft_cast_ray(t_all *all);
 // char    **create_map(t_list **head, int size);
@@ -124,7 +140,12 @@ void    make_rectangle_map(t_all *all);
 void    cast_rays(t_all *all);
 void    draw_wall(t_all *all, int x, int y, int side);
 void	buff_textures(t_all *all);
-int    pixel_take(t_all *all, int x, int y, int side);
-
+int     pixel_take(t_all *all, int x, int y, int side);
+void    draw_sprites(t_all *all);
+void    dist_to_sprite(t_all *all, int num);
+void	sprite_dir(t_all *all, int num);
+int	    get_sprite_color(t_all *all, int num, int i, int j, int color);
+void    draw_sprite(t_all *all, int num);
+void	sprites_init(t_all *all);
 
 #endif
