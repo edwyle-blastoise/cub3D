@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprites.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/28 16:38:15 by eblastoi          #+#    #+#             */
+/*   Updated: 2021/04/28 16:38:22 by eblastoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void  dist_to_sprite(t_all *all, int num)
@@ -64,11 +76,9 @@ void    draw_sprite(t_all *all, int num)
 			{
 				color = get_sprite_color(all, num, y, x, 0);
 				
-				if ((all->spr[num]->offset_y + x > 0) && \
-				(all->spr[num]->offset_y + x < all->params->height)
+				if ((all->spr[num]->offset_y + x > 0) && (all->spr[num]->offset_y + x < all->params->height)
 					&& color != 0x000000)
-					my_mlx_pixel_put(all->data, all->spr[num]->offset_x + y, \
-					all->spr[num]->offset_y + x, color);
+					my_mlx_pixel_put(all->data, all->spr[num]->offset_x + y, all->spr[num]->offset_y + x, color);
 				x++;
 			}
 		}
@@ -85,15 +95,15 @@ void	sprites_init(t_all *all)
     num = 0;
     if (!(all->spr = (t_sprites**)ft_calloc((all->params->sprites + 1), sizeof(t_sprites*))))
 	{
-		all->params->error = 11;
-        error_close(all->params);
+		all->params->error = 9;
+        error_close(all);
 	}
     while (num < all->params->sprites)
     {
         if (!(all->spr[num] = (t_sprites*)ft_calloc(1, sizeof(t_sprites))))
 		{
-			all->params->error = 11;
-			error_close(all->params);
+			all->params->error = 9;
+			error_close(all);
 		}
         num++;
     }
@@ -134,7 +144,7 @@ void    draw_sprites(t_all *all)
 		size /= 2;
 		all->spr[num]->offset_x = all->params->width / 2 - 1 + tan(all->spr[num]->dir) * all->params->height - (size);
 		all->spr[num]->offset_y = all->params->height / 2 - size;
-		if (fabs(all->spr[num]->dir) < M_PI_2 && all->spr[num]->sprite_height < all->params->height * 2 / 3 )
+		if (fabs(all->spr[num]->dir) < M_PI_2 && all->spr[num]->sprite_height < all->params->height * 7 / 9 )
 		{
 			draw_sprite(all, num);
 			//printf("num= %d [%lf:%lf]\n", num, all->spr[num]->x, all->spr[num]->y );

@@ -17,7 +17,7 @@ void	buff_textures(t_all *all)
         || !(all->text[i].texture_addr = (int *)mlx_get_data_addr(all->text[i].texture_img, &all->text[i].texture_bpp, &all->text[i].texture_line_length, &all->text[i].texture_endian)))
         {
             all->params->error = 10;
-            error_close(all->params);
+            error_close(all);
         }
         i++;
     }

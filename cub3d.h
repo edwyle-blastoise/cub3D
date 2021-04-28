@@ -133,7 +133,7 @@ void	ft_cast_rays(t_all *all);
 // int     key_press(int key, t_all *all);
 void    check_map(t_all *all);
 // int     check_wall(int key, t_all *all);
-void    error_close(t_params *params);
+void    error_close(t_all *all);
 // void    check_arg_name(char *argv1, t_params *params);
 // void    check_player(t_all *all, char *line);
 void    make_rectangle_map(t_all *all);
@@ -147,5 +147,6 @@ void	sprite_dir(t_all *all, int num);
 int	    get_sprite_color(t_all *all, int num, int i, int j, int color);
 void    draw_sprite(t_all *all, int num);
 void	sprites_init(t_all *all);
+int create_bmp(t_all *all);
 
 #endif

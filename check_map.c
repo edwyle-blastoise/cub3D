@@ -37,8 +37,8 @@ void    make_rectangle_map(t_all *all)
             j = 0;
             if (!(remainder = ft_calloc(sizeof(char*), (all->params->map_width - len) + 1)))
             {
-                all->params->error = 11;
-                error_close(all->params);
+                all->params->error = 9;
+                error_close(all);
             }
             while (j < (all->params->map_width - len))
             {
@@ -81,8 +81,8 @@ void    check_close_map(t_all *all, int len, int i)
             || (all->params->map[i - 1][j + 1] == ' ') \
             || (all->params->map[i - 1][j - 1] == ' '))
             {
-                all->params->error = 9;
-                error_close(all->params);
+                all->params->error = 5;
+                error_close(all);
             }
         }
         j++;
@@ -98,12 +98,12 @@ void     check_map(t_all *all)
     i = 0;
     while (all->params->map[i])
     {
-        if (ft_strchr(all->params->map[i], '1'))
+        if (ft_strchr(all->params->map[i], '1') || ft_strchr(all->params->map[i], ' '))
             all->params->map_height++;
         else
         {
             all->params->error = 5;
-            error_close(all->params);
+            error_close(all);
         }
         i++;
     }
@@ -112,27 +112,29 @@ void     check_map(t_all *all)
     {
         j = 0;
         len = ft_strlen(all->params->map[i]);
-        if (i == 0 || i == all->params->map_height)
+        if (i == 0 || i == (all->params->map_height - 1))
         {
             while (j < len)
             {
-                if (all->params->map[i][j] == '1' && (all->params->map[i][j + 1] != ' '))
-                if (all->params->map[i][j] != '1' && all->params->map[i][j] != ' ')
+                if ((all->params->map[i][j] != '1') && (all->params->map[i][j] != ' '))
                 {
                     all->params->error = 5;
-                    error_close(all->params);
+                    error_close(all);
                 }
                 j++;
             }
         }
         else
+        {
+            make_rectangle_map(all);
             check_close_map(all, len, i);
+        }
         check_player(all, all->params->map[i]);
         i++;
     }
     if (all->params->plr_found != 1)
     {
         all->params->error = 4;
-        error_close(all->params);
+        error_close(all);
     }
 }

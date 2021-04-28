@@ -69,7 +69,7 @@ void    read_map(char *argv1, t_all *all)
     params_init(all->params);
     while (get_next_line(all->params->fd, &line) > 0)
     {
-        if ((all->params->settings == 8) && (ft_strchr(line, '1')))
+        if ((all->params->settings == 8) && ((ft_strchr(line, '1')) || (ft_strchr(line, ' '))))
         {
             all->params->map_start = 1;
             ft_lstadd_back(&head, ft_lstnew(line));
@@ -80,10 +80,9 @@ void    read_map(char *argv1, t_all *all)
     if (all->params->settings != 8)
     {
         all->params->error = 3;
-        error_close(all->params);
+        error_close(all);
     }
     all->params->map = create_map(&head, ft_lstsize(head));
-    make_rectangle_map(all);
     check_map(all);
 }
 
