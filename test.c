@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "/Users/eblastoi/cub3d/minilibx_mms/mlx.h"
 //-lmlx -framework OpenGL -framework AppKit
-//gcc -g -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit gnl/*c libmlx.a libft.a cub3d.c parser.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c
+//gcc -g -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit gnl/*c libmlx.a libft.a cub3d.c parser.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c screenshot_bmp.c && ./a.out map.cub
 
 
 typedef struct  s_data {

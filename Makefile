@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		= cub3d.c parser.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c \
+SRCS		= cub3d.c parser.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c screenshot_bmp.c check_errors.c \
 			  ${GNL_DIR}/get_next_line.c ${GNL_DIR}/get_next_line_utils.c 
 
 HEADERS		= cub3d.h 

@@ -147,28 +147,33 @@ double  vertical_cross(t_all *all, double angle)
     return (fabs(ray_len));
 }
 
+
 void    cast_rays(t_all *all)
 {
     double  start;
-    double  end;
+    //double  end;
     double  step; 
     double  dist_h;
     double  dist_v;
     int     i;
 
-    start = all->plr->direction - M_PI / 6; // -30град FOV 60 град
-    end = all->plr->direction + M_PI / 6; // +30град 
-	step = M_PI / 3 / all->params->width;
+	double asp = all->params->width / (double)all->params->height;
+
+    //start = all->plr->direction - M_PI * asp / 6; // -30град FOV 60 град
+    //end = all->plr->direction + M_PI * asp / 6; // +30град 
+	step = M_PI / 3 / (double)all->params->width;
     i = 0;
 	all->params->dist_to_wall = (double*)malloc(sizeof(double) * all->params->width + 1);
-    while (start < end)
+    //while (start < end)
+	while(i < all->params->width)
     {
+		start = all->plr->direction - M_PI / 6 + i * step;
         dist_h = horizont_cross(all, start) * cos(start - all->plr->direction);
         dist_v = vertical_cross(all, start) * cos(start - all->plr->direction);
         if (dist_h < dist_v)
 		{
 			all->params->hit = all->params->hit_x;
-			all->params->wall_height = (all->params->height / dist_h);
+			all->params->wall_height = (all->params->height / dist_h) * asp;
 			all->params->dist_to_wall[i] = dist_h;
 			// printf("dist_h = %lf\n", all->params->dist_to_wall[i]);
 			draw(all, i, all->params->dir_h);
@@ -176,12 +181,12 @@ void    cast_rays(t_all *all)
         else
 		{
 			all->params->hit = all->params->hit_y;
-			all->params->wall_height = (all->params->height / dist_v);
+			all->params->wall_height = (all->params->height / dist_v) * asp;
 			all->params->dist_to_wall[i] = dist_v;
 			// printf("dist_v = %lf\n", all->params->dist_to_wall[i]);
 			draw(all, i, all->params->dir_v);
 		}
-        start += step;
+        //start += step;
         i++;
     }
 }

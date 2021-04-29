@@ -14,10 +14,14 @@
 
 void  dist_to_sprite(t_all *all, int num)
 {
+	double dist = hypot(all->spr[num]->x - all->plr->x + 0.5, all->spr[num]->y - all->plr->y + 0.5);
     all->spr[num]->dist = 0;
-	if (hypot(all->plr->x - all->spr[num]->x, all->plr->y) > all->spr[num]->dist)
+	//all->spr[num]->dist *= cos(all->spr[num]->dir);
+	//if (hypot(all->plr->x - all->spr[num]->x + 0.5, all->plr->y - all->spr[num]->y + 0.5) > all->spr[num]->dist)
+	if (dist >= all->spr[num]->dist)
 	{
-		all->spr[num]->dist = hypot(all->plr->x - (all->spr[num]->x + 0.5), all->plr->y - (all->spr[num]->y + 0.5));
+		all->spr[num]->dist = dist;// hypot(all->plr->x - (all->spr[num]->x + 0.5), all->plr->y - (all->spr[num]->y + 0.5));
+		//all->spr[num]->dist /= cos(all->spr[num]->dir);
 		// printf("Dist = %lf\n", all->spr[num]->dist);
 	}
 }
@@ -61,28 +65,31 @@ void    draw_sprite(t_all *all, int num)
 	int	x;
 	int	color;
 	int dy = all->spr[num]->sprite_height;
-	double winaspect = all->params->width / all->params->height;
-	int dx = (all->spr[num]->sprite_height * winaspect);
+	double asp = all->params->width / all->params->height;
+	int dx = (all->spr[num]->sprite_height * asp);
 
-	y = 0;
-	while (y < dy)
+	x = 0;
+	while (x < dx)
 	{
-		if (all->spr[num]->offset_x + y > 0 && all->spr[num]->offset_x + y < all->params->width \
-			&& all->params->dist_to_wall[(int)all->spr[num]->offset_x + y] \
-			+ 0.5 > all->spr[num]->dist)
+		if (all->spr[num]->offset_x + x >= 0 && all->spr[num]->offset_x + x < all->params->width &&
+			 all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] >=
+			 all->spr[num]->dist)
 		{
-			x = 0;
-			while (x < dx)
+			if (all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] < all->spr[num]->dist) {
+				printf("save dist = %lf, sprite dist = %lf\n", all->params->dist_to_wall[(int)all->spr[num]->offset_x + x], all->spr[num]->dist);
+			}
+			y = 0;
+			while (y < dy)
 			{
-				color = get_sprite_color(all, num, y, x, 0);
+				color = get_sprite_color(all, num, x, y, 0);
 				
-				if ((all->spr[num]->offset_y + x > 0) && (all->spr[num]->offset_y + x < all->params->height)
+				if ((all->spr[num]->offset_y + y >= 0) && (all->spr[num]->offset_y + y < all->params->height)
 					&& color != 0x000000)
-					my_mlx_pixel_put(all->data, all->spr[num]->offset_x + y, all->spr[num]->offset_y + x, color);
-				x++;
+					my_mlx_pixel_put(all->data, all->spr[num]->offset_x + x, all->spr[num]->offset_y + y, color);
+				y++;
 			}
 		}
-		y++;
+		x++;
 	}
 }
 
@@ -130,21 +137,30 @@ void    draw_sprites(t_all *all)
 {
 	int	num;
 	double size;
-
+	double asp = all->params->width / ((double)all->params->height);
+	printf("asp=%lf\n", asp);
     num = 0;
 	while (num < all->params->sprites)
 	{
-		dist_to_sprite(all, num);
 		sprite_dir(all, num);
+		dist_to_sprite(all, num);
+		
         //all->spr[num]->sprite_height = (all->params->height / all->spr[num]->dist);
 		//all->spr[num]->offset_x = all->params->width / 2 - 1 + tan(all->spr[num]->dir) * all->params->height - all->spr[num]->sprite_height / 2;
 		//all->spr[num]->offset_y = all->params->height / 2 - all->spr[num]->sprite_height / 2;
-		size = (all->params->height / all->spr[num]->dist);
+		size = all->params->width / (all->spr[num]->dist);// * asp; //* cos(all->spr[num]->dir
 		all->spr[num]->sprite_height = size;
 		size /= 2;
-		all->spr[num]->offset_x = all->params->width / 2 - 1 + tan(all->spr[num]->dir) * all->params->height - (size);
+		printf("num=%d size = %lf, dir=%lf sin=%lf dist=%lf\n", num, all->spr[num]->sprite_height, all->spr[num]->dir, sin(all->spr[num]->dir), all->spr[num]->dist);
+		all->spr[num]->offset_x = all->params->width / 2 + tan(all->spr[num]->dir)  * all->params->width - (size);
+
+		//all->spr[num]->offset_x = all->params->width / 2  - size - all->spr[num]->dir * (all->params->width  / (M_PI / 3));
+
+		//all->spr[num]->offset_x = (all->spr[num]->dir - all->plr->direction) / (M_PI / 3) *(all->params->width / 2) + (all->params->width/2)/2 - size;
 		all->spr[num]->offset_y = all->params->height / 2 - size;
-		if (fabs(all->spr[num]->dir) < M_PI_2 && all->spr[num]->sprite_height < all->params->height * 7 / 9 )
+		if (fabs(all->spr[num]->dir) < M_PI_2 &&
+		//if ((all->spr[num]->dir) < M_PI_2 &&
+			all->spr[num]->sprite_height < 2000)// all->params->height * 7 / 9 )
 		{
 			draw_sprite(all, num);
 			//printf("num= %d [%lf:%lf]\n", num, all->spr[num]->x, all->spr[num]->y );
@@ -152,3 +168,5 @@ void    draw_sprites(t_all *all)
 		num++;
 	}
 }
+
+

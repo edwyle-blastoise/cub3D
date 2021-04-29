@@ -28,7 +28,7 @@ void draw_wall(t_all * all, int x, int y, int side)
     int dy;
     int dx;
     int offset;
-    int color;
+    unsigned int color;
 
     if (side < 2)
         dx = all->params->hit_x * all->text[side].texture_width;
@@ -46,16 +46,18 @@ void draw_wall(t_all * all, int x, int y, int side)
 void    draw(t_all *all, int x, int side)
 {
     int y;
+    //(void)side;
 
     y = 0;
     while (y < all->params->height)
     {
         if (y < (all->params->height - all->params->wall_height) / 2)
+        //if (y < all->params->height / 2)
             my_mlx_pixel_put(all->data, x, y, all->params->ceilling_color);
         else if ((y >= (all->params->height - all->params->wall_height) / 2) && (y < (all->params->height + all->params->wall_height) / 2))
         // my_mlx_pixel_put(all->data, x, y, 0xFF5533);
             draw_wall(all, x, y, side);
-        else if ((y >= (all->params->height + all->params->wall_height) / 2) && (y < all->params->height - 1))
+        else //if ((y >= (all->params->height + all->params->wall_height) / 2) && (y < all->params->height - 1))
             my_mlx_pixel_put(all->data, x, y, all->params->floor_color);
         y++;
     }
