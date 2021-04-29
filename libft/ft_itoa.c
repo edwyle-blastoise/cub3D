@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 18:51:09 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:58:07 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:18:17 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	n_len(int n)
 	return (len);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*res;
 	int		len;
@@ -35,7 +35,7 @@ char		*ft_itoa(int n)
 	len = n_len(n);
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	res = (char*)malloc(sizeof(char) * (len + 1));
+	res = (char *)malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (NULL);
 	if (n < 0)

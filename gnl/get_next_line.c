@@ -6,13 +6,13 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/09 18:48:59 by eblastoi          #+#    #+#             */
-/*   Updated: 2021/01/11 15:39:27 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:13:43 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	*tmp;
 	char		buff[BUFFER_SIZE + 1];
@@ -26,9 +26,9 @@ int		get_next_line(int fd, char **line)
 		tmp[0] = 0;
 	}
 	tmp = check_read(fd, &tmp, buff, line);
-	if (tmp == (char*)ERROR)
+	if (tmp == (char *)ERROR)
 		return (-1);
-	else if (tmp == (char*)NL)
+	else if (tmp == (char *)NL)
 		return (0);
 	*ft_strchr(tmp, '\n') = '\0';
 	*line = tmp;
@@ -45,13 +45,13 @@ char	*check_read(int fd, char **tmp, char *buff, char **line)
 	{
 		res = read(fd, buff, BUFFER_SIZE);
 		if (res < 0)
-			return ((char*)ERROR);
+			return ((char *)ERROR);
 		if (res == 0)
 		{
 			*line = ft_strdup(*tmp);
 			free(*tmp);
 			*tmp = NULL;
-			return ((char*)NL);
+			return ((char *)NL);
 		}
 		buff[res] = '\0';
 		ptr = ft_strjoin(*tmp, buff);

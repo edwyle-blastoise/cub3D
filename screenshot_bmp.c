@@ -61,7 +61,7 @@ int create_bmp(t_all *all)
     int fd;
     fd = open("Screenshot.bmp", O_WRONLY | O_CREAT | O_TRUNC, 0777);
     if (fd == -1)
-        error_close(all);
+        error_close(all, 10);
     set_header(all, fd);
     set_image(all, fd);
     close(fd);

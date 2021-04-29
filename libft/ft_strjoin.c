@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 19:04:18 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:51:20 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:26:12 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	s3 = (char*)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	s3 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!s3)
 		return (NULL);
 	ft_strlcpy(s3, s1, (ft_strlen(s1) + 1));

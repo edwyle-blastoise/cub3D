@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 15:38:47 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:40:23 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:25:28 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ char	*ft_strchr(const char *s, int c)
 	while (*s)
 	{
 		if (*s == (char)c)
-			return ((char*)s);
+			return ((char *)s);
 		s++;
 	}
 	if (c == '\0' && *s == '\0')
-		return (char*)s;
+		return ((char *)s);
 	return (NULL);
 }

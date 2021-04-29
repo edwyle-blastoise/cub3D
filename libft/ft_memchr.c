@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 14:03:39 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:34:18 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:19:35 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	unsigned char	*str;
 	size_t			i;
 
-	str = (unsigned char*)s;
+	str = (unsigned char *)s;
 	i = 0;
 	while (i != n)
 	{

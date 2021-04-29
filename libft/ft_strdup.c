@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/15 16:37:59 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:49:22 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:25:52 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strdup(const char *s1)
 	int		i;
 
 	i = 0;
-	s1_copy = (char*)malloc((ft_strlen(s1) + 1) * sizeof(char));
+	s1_copy = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (!s1_copy)
 		return (NULL);
 	i = 0;

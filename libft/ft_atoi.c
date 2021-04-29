@@ -6,15 +6,15 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 21:44:31 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:46:49 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:17:18 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int i;
-	int result;
-	int sign;
+	int	i;
+	int	result;
+	int	sign;
 
 	i = 0;
 	result = 0;

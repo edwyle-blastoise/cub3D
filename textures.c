@@ -1,24 +1,33 @@
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/29 22:29:11 by eblastoi          #+#    #+#             */
+/*   Updated: 2021/04/29 22:29:14 by eblastoi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "cub3d.h"
 
 void	buff_textures(t_all *all)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    all->text[0].texture_path = all->params->north_texture;
+	i = 0;
+	all->text[0].texture_path = all->params->north_texture;
 	all->text[1].texture_path = all->params->south_texture;
 	all->text[2].texture_path = all->params->west_texture;
 	all->text[3].texture_path = all->params->east_texture;
 	all->text[4].texture_path = all->params->sprite_texture;
-    while (i < 5)
-    {
-        if(!(all->text[i].texture_img = mlx_xpm_file_to_image(all->data->mlx, all->text[i].texture_path, &all->text[i].texture_width, &all->text[i].texture_height)) \
-        || !(all->text[i].texture_addr = (int *)mlx_get_data_addr(all->text[i].texture_img, &all->text[i].texture_bpp, &all->text[i].texture_line_length, &all->text[i].texture_endian)))
-        {
-            all->params->error = 10;
-            error_close(all);
-        }
-        i++;
-    }
+	while (i < 5)
+	{
+		all->text[i].texture_img = mlx_xpm_file_to_image(all->data->mlx, all->text[i].texture_path, &all->text[i].texture_width, &all->text[i].texture_height);
+		all->text[i].texture_addr = (int *)mlx_get_data_addr(all->text[i].texture_img, &all->text[i].texture_bpp, &all->text[i].texture_line_length, &all->text[i].texture_endian);
+			if(!all->text[i].texture_img || !all->text[i].texture_addr)
+				error_close(all, 9);
+		i++;
+	}
 }

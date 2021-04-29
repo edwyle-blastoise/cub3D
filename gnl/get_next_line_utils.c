@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 14:20:10 by eblastoi          #+#    #+#             */
-/*   Updated: 2021/01/10 14:23:14 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:15:56 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ char	*ft_strchr(const char *s, int c)
 	while (*s)
 	{
 		if (*s == (char)c)
-			return ((char*)s);
+			return ((char *)s);
 		s++;
 	}
 	if (c == '\0' && *s == '\0')
-		return (char*)s;
+		return ((char *)s);
 	return (NULL);
 }
 
@@ -43,7 +43,7 @@ char	*ft_strdup(const char *s1)
 	int		i;
 
 	i = 0;
-	s1_copy = (char*)malloc((ft_strlen(s1) + 1) * sizeof(char));
+	s1_copy = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (!s1_copy)
 		return (NULL);
 	i = 0;
@@ -66,7 +66,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	j = 0;
 	if (!s1 && !s2)
 		return (NULL);
-	s3 = (char*)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	s3 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!s3)
 		return (NULL);
 	while (s1 != NULL && s1[i])

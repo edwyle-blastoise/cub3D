@@ -12,10 +12,10 @@
 
 #include "cub3d.h"
 
-void  dist_to_sprite(t_all *all, int num)
+void	dist_to_sprite(t_all *all, int num)
 {
 	double dist = hypot(all->spr[num]->x - all->plr->x + 0.5, all->spr[num]->y - all->plr->y + 0.5);
-    all->spr[num]->dist = 0;
+	all->spr[num]->dist = 0;
 	//all->spr[num]->dist *= cos(all->spr[num]->dir);
 	//if (hypot(all->plr->x - all->spr[num]->x + 0.5, all->plr->y - all->spr[num]->y + 0.5) > all->spr[num]->dist)
 	if (dist >= all->spr[num]->dist)
@@ -28,14 +28,14 @@ void  dist_to_sprite(t_all *all, int num)
 
 void	sprite_dir(t_all *all, int num)
 {
-    all->spr[num]->dir = 0;
+	all->spr[num]->dir = 0;
 	all->spr[num]->dir = atan2((all->spr[num]->y + 0.5 - all->plr->y), (all->spr[num]->x + 0.5 - all->plr->x));
 	while (all->spr[num]->dir - all->plr->direction > M_PI)
 		all->spr[num]->dir -= 2 * M_PI;
 	while (all->spr[num]->dir - all->plr->direction < - M_PI)
 		all->spr[num]->dir += 2 * M_PI;
 	all->spr[num]->dir -= all->plr->direction;
-    // printf("Dir = %lf\n", all->spr[num]->dir);
+	// printf("Dir = %lf\n", all->spr[num]->dir);
 }
 
 int	get_sprite_color(t_all *all, int num, int i, int j, int color)
@@ -59,9 +59,9 @@ int	get_sprite_color(t_all *all, int num, int i, int j, int color)
 	return (color);
 }
 
-void    draw_sprite(t_all *all, int num)
+void	draw_sprite(t_all *all, int num)
 {
-    int	y;
+	int	y;
 	int	x;
 	int	color;
 	int dy = all->spr[num]->sprite_height;
@@ -72,8 +72,8 @@ void    draw_sprite(t_all *all, int num)
 	while (x < dx)
 	{
 		if (all->spr[num]->offset_x + x >= 0 && all->spr[num]->offset_x + x < all->params->width &&
-			 all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] >=
-			 all->spr[num]->dist)
+			all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] >=
+			all->spr[num]->dist)
 		{
 			if (all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] < all->spr[num]->dist) {
 				printf("save dist = %lf, sprite dist = %lf\n", all->params->dist_to_wall[(int)all->spr[num]->offset_x + x], all->spr[num]->dist);
@@ -82,7 +82,7 @@ void    draw_sprite(t_all *all, int num)
 			while (y < dy)
 			{
 				color = get_sprite_color(all, num, x, y, 0);
-				
+
 				if ((all->spr[num]->offset_y + y >= 0) && (all->spr[num]->offset_y + y < all->params->height)
 					&& color != 0x000000)
 					my_mlx_pixel_put(all->data, all->spr[num]->offset_x + x, all->spr[num]->offset_y + y, color);
@@ -99,24 +99,18 @@ void	sprites_init(t_all *all)
 	int x;
 	int y;
 
-    num = 0;
-    if (!(all->spr = (t_sprites**)ft_calloc((all->params->sprites + 1), sizeof(t_sprites*))))
+	num = 0;
+	if (!(all->spr = (t_sprites**)ft_calloc((all->params->sprites + 1), sizeof(t_sprites*))))
+		error_close(all, 8);
+	while (num < all->params->sprites)
 	{
-		all->params->error = 9;
-        error_close(all);
+		if (!(all->spr[num] = (t_sprites*)ft_calloc(1, sizeof(t_sprites))))
+			error_close(all, 8);
+		num++;
 	}
-    while (num < all->params->sprites)
-    {
-        if (!(all->spr[num] = (t_sprites*)ft_calloc(1, sizeof(t_sprites))))
-		{
-			all->params->error = 9;
-			error_close(all);
-		}
-        num++;
-    }
 	num = 0;
 	y = 0;
-    while (y < all->params->map_height)
+	while (y < all->params->map_height)
 	{
 		x = 0;
 		while (x < all->params->map_width)
@@ -133,19 +127,19 @@ void	sprites_init(t_all *all)
 	}
 }
 
-void    draw_sprites(t_all *all)
+void	draw_sprites(t_all *all)
 {
 	int	num;
 	double size;
 	double asp = all->params->width / ((double)all->params->height);
 	printf("asp=%lf\n", asp);
-    num = 0;
+	num = 0;
 	while (num < all->params->sprites)
 	{
 		sprite_dir(all, num);
 		dist_to_sprite(all, num);
-		
-        //all->spr[num]->sprite_height = (all->params->height / all->spr[num]->dist);
+
+		//all->spr[num]->sprite_height = (all->params->height / all->spr[num]->dist);
 		//all->spr[num]->offset_x = all->params->width / 2 - 1 + tan(all->spr[num]->dir) * all->params->height - all->spr[num]->sprite_height / 2;
 		//all->spr[num]->offset_y = all->params->height / 2 - all->spr[num]->sprite_height / 2;
 		size = all->params->width / (all->spr[num]->dist);// * asp; //* cos(all->spr[num]->dir

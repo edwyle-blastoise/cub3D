@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 16:57:30 by eblastoi          #+#    #+#             */
-/*   Updated: 2020/11/27 18:52:02 by eblastoi         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:30:13 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		len--;
 	if (i >= len)
 		return (ft_strdup(""));
-	result = (char*)malloc(sizeof(char) * ((len - i) + 1));
+	result = (char *)malloc(sizeof(char) * ((len - i) + 1));
 	if (!result)
 		return (NULL);
 	while (i < len)

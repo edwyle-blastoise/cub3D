@@ -32,125 +32,127 @@
 
 typedef struct  s_params
 {
-    int         settings;
-    int         width;
-    int         height;
-    int         t;
-    int         r;
-    int         g;
-    int         b;
-    int         floor_color;
-    int         ceilling_color;
-    char        *north_texture;
-    char        *south_texture;
-    char        *west_texture;
-    char        *east_texture;
-    char        *sprite_texture;
-    int         fd;
-    char        **map;
-    int         map_height;
-    int         map_width;
-    int         map_start;
-    int         plr_found;
-    int         error;
-    double      wall_height;
-    int         dir_h;
-    int         dir_v;
-    double      *dist_to_wall;
-    double		hit_x;
-    double		hit_y;
-    double      hit;
-    int         sprites;
-}               t_params;
+	int			settings;
+	int			width;
+	int			height;
+	int			t;
+	int			r;
+	int			g;
+	int			b;
+	int			floor_color;
+	int			ceilling_color;
+	char		*north_texture;
+	char		*south_texture;
+	char		*west_texture;
+	char		*east_texture;
+	char		*sprite_texture;
+	int			fd;
+	char		**map;
+	int			map_height;
+	int			map_width;
+	int			map_start;
+	int			plr_found;
+	int			error;
+	double		wall_height;
+	int			dir_h;
+	int			dir_v;
+	double		*dist_to_wall;
+	double		hit_x;
+	double		hit_y;
+	double		hit;
+	int			sprites;
+}				t_params;
 
 typedef struct s_sprites
 {
-    double      x;
-    double      y;
-    double      dist;
-    double      dir;
-    double      angle;
-    double      sprite_height;
-    double      offset_x;
-    double      offset_y;
-}               t_sprites;
+	double		x;
+	double		y;
+	double		dist;
+	double		dir;
+	double		angle;
+	double		sprite_height;
+	double		offset_x;
+	double		offset_y;
+}				t_sprites;
 
 typedef struct s_image
 {
-    int         texture_width;
-    int         texture_height;
-    void        *texture_img;
-    int         *texture_addr;
-    int         texture_bpp;
-    int         texture_line_length;
-    int         texture_endian;
-    char        *texture_path;
-}               t_image;
+	int			texture_width;
+	int			texture_height;
+	void		*texture_img;
+	int			*texture_addr;
+	int			texture_bpp;
+	int			texture_line_length;
+	int			texture_endian;
+	char		*texture_path;
+}				t_image;
 
 typedef struct s_player
 {
-    double x;
-    double y;
-    double direction;
-}               t_player;
+	double		x;
+	double		y;
+	double		direction;
+}				t_player;
 
 typedef struct  s_data
 {
-    void        *mlx;
-    void        *win;
-    void        *img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-}               t_data;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}				t_data;
 
 typedef struct  s_all
 {
-    t_params    *params;
-    t_data      *data;
-    t_player    *plr;
-    t_sprites   **spr;
-    t_image     text[5];
-}               t_all;
+	t_params	*params;
+	t_data		*data;
+	t_player	*plr;
+	t_sprites	**spr;
+	t_image		text[5];
+}				t_all;
 
 
 // void    params_init(t_params *params);
 // void    define_resolution(char *line, t_params *params);
 void	buff_textures(t_all *all);
-void    cast_rays(t_all *all);
-void    check_arg_name(char **argv, t_all *all);
-void    check_map(t_all *all);
-int     check_wall(int key, t_all *all);
-int     create_bmp(t_all *all);
-int     create_trgb(int r, int g, int b);
-char    **create_map(t_list **head, int size);
-void    dist_to_sprite(t_all *all, int num);
-void    draw(t_all *all, int x, int side);
-void    draw_map(t_all *all);
-void    draw_sprite(t_all *all, int num);
-void    draw_sprites(t_all *all);
-void    draw_wall(t_all *all, int x, int y, int side);
+void	cast_rays(t_all *all);
+void	check_map(t_all *all);
+int		check_wall(int key, t_all *all);
+int		create_bmp(t_all *all);
+int		create_trgb(int r, int g, int b);
+// char	**create_map(t_list **head, int size);
+void	dist_to_sprite(t_all *all, int num);
+void	draw(t_all *all, int x, int side);
+void	draw_map(t_all *all);
+void	draw_sprite(t_all *all, int num);
+void	draw_sprites(t_all *all);
+void	draw_wall(t_all *all, int x, int y, int side);
 // int     define_color(char *line, t_params *params);
-void    error_close(t_all *all);
+void	error_close(t_all *all, int i);
+int		exit_cub(t_all *all);
 void	ft_cast_rays(t_all *all);
-int	    get_sprite_color(t_all *all, int num, int i, int j, int color);
-void    init_player(t_all *all);
-void    init_sprites(t_all *all);
-int     key_press(int key, t_all *all);
-void    parser(char *line, t_all *all);
+int		get_sprite_color(t_all *all, int num, int i, int j, int color);
+void	init_player(t_all *all);
+void	init_sprites(t_all *all);
+int		key_press(int key, t_all *all);
+void	params_init(t_params *params);
+void	parser(char *line, t_all *all);
 
 // void    draw_player(t_all *all);
 // void	ft_cast_ray(t_all *all);
-void    make_rectangle_map(t_all *all);
-void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void    read_map(char *argv1, t_all *all);
-void    scale_map(t_data  *data, int x, int y, int color);
+void	make_rectangle_map(t_all *all);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	read_map(char *argv1, t_all *all);
+void	scale_map(t_data  *data, int x, int y, int color);
 // void    check_player(t_all *all, char *line);
+void	free_array(char **array);
 
 
 
-int     pixel_take(t_all *all, int x, int y, int side);
+int		pixel_take(t_all *all, int x, int y, int side);
 
 void	sprite_dir(t_all *all, int num);
 
