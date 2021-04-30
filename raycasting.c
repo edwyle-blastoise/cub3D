@@ -24,14 +24,14 @@ void	ft_cast_ray(t_all *all)
 		ray_x += cos(all->plr->direction);
 		ray_y += sin(all->plr->direction);
         my_mlx_pixel_put(all->data, ray_x, ray_y, 0x990099);
-	    
+
 	}
 }
 
 void	ft_cast_rays(t_all *all)
 {
 	t_player	ray;
-	double      start; 
+	double      start;
     double      end;
 	int			x;
 
@@ -118,7 +118,7 @@ double  vertical_cross(t_all *all, double angle)
 	{
 		all->params->dir_v = 2; //'E'
 		delta_x = 1;
-		new_x = (int)all->plr->x + 1; 
+		new_x = (int)all->plr->x + 1;
 	}
 	else if (cos(angle) < 0)
 	{
@@ -152,7 +152,7 @@ void    cast_rays(t_all *all)
 {
     double  start;
     //double  end;
-    double  step; 
+    double  step;
     double  dist_h;
     double  dist_v;
     int     i;
@@ -160,10 +160,9 @@ void    cast_rays(t_all *all)
 	double asp = all->params->width / (double)all->params->height;
 
     //start = all->plr->direction - M_PI * asp / 6; // -30град FOV 60 град
-    //end = all->plr->direction + M_PI * asp / 6; // +30град 
+    //end = all->plr->direction + M_PI * asp / 6; // +30град
 	step = M_PI / 3 / (double)all->params->width;
     i = 0;
-	all->params->dist_to_wall = (double*)malloc(sizeof(double) * all->params->width + 1);
     //while (start < end)
 	while(i < all->params->width)
     {

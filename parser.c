@@ -30,13 +30,27 @@ void	define_resolution(char *line, t_all *all)
 		all->params->height = ft_atoi(resolution[2]);
 		if (all->params->width <= 0 || all->params->height <= 0)
 			error_close(all, 5);
+		check_screen_size(all);
 	}
 	else
 		error_close(all, 5);
 	free_array(resolution);
 }
 
-char	**get_colors_int(char **str_color, t_all *all, int i)
+static void	is_num(char *array, t_all *all)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		if (!ft_isdigit(array[i]))
+			error_close(all, 6);
+		i++;
+	}
+}
+
+static void	get_colors_int(char **str_color, t_all *all, int i)
 {
 	char	**rgb;
 	int		j;
@@ -47,7 +61,10 @@ char	**get_colors_int(char **str_color, t_all *all, int i)
 	{
 		rgb = ft_split(str_color[1], ',');
 		while (rgb[j])
+		{
+			is_num(rgb[j], all);
 			j++;
+		}
 		if (j == 3)
 		{
 			all->params->r = ft_atoi(rgb[0]);
@@ -60,7 +77,6 @@ char	**get_colors_int(char **str_color, t_all *all, int i)
 	else
 		error_close(all, 2);
 	free_array(rgb);
-	return (rgb);
 }
 
 void	define_color(char *line, t_all *all)
@@ -158,7 +174,6 @@ void	parser(char *line, t_all *all)
 	{
 		if (all->params->map_start == 1)
 			error_close(all, 4);
-		printf("\n");
 	}
 	else if ((all->params->settings == 8) && (all->params->map_start == 1))
 	{

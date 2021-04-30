@@ -61,6 +61,16 @@ typedef struct  s_params
 	double		hit_y;
 	double		hit;
 	int			sprites;
+	int			screen_height;
+	int			screen_width;
+	int			key_w;
+	int			key_up;
+	int			key_down;
+	int			key_a;
+	int			key_s;
+	int			key_d;
+	int			key_l;
+	int			key_r;
 }				t_params;
 
 typedef struct s_sprites
@@ -120,7 +130,8 @@ typedef struct  s_all
 void	buff_textures(t_all *all);
 void	cast_rays(t_all *all);
 void	check_map(t_all *all);
-int		check_wall(int key, t_all *all);
+void	check_screen_size(t_all *all);
+int		check_wall(t_all *all);
 int		create_bmp(t_all *all);
 int		create_trgb(int r, int g, int b);
 // char	**create_map(t_list **head, int size);
@@ -137,7 +148,9 @@ void	ft_cast_rays(t_all *all);
 int		get_sprite_color(t_all *all, int num, int i, int j, int color);
 void	init_player(t_all *all);
 void	init_sprites(t_all *all);
+void	key_events(t_all *all);
 int		key_press(int key, t_all *all);
+int		key_release(int key, t_all *all);
 void	params_init(t_params *params);
 void	parser(char *line, t_all *all);
 

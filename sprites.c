@@ -12,6 +12,25 @@
 
 #include "cub3d.h"
 
+void	fix_map(t_all *all)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < all->params->map_height)
+	{
+		j = 0;
+		while (j < all->params->map_width)
+		{
+			if (all->params->map[(int)i][(int)j] == '3')
+				all->params->map[(int)i][(int)j] = '2';
+			j++;
+		}
+		i++;
+	}
+}
+
 void	dist_to_sprite(t_all *all, int num)
 {
 	double dist = hypot(all->spr[num]->x - all->plr->x + 0.5, all->spr[num]->y - all->plr->y + 0.5);
@@ -24,6 +43,7 @@ void	dist_to_sprite(t_all *all, int num)
 		//all->spr[num]->dist /= cos(all->spr[num]->dir);
 		// printf("Dist = %lf\n", all->spr[num]->dist);
 	}
+	all->params->map[(int)all->spr[num]->y][(int)all->spr[num]->x] = '3';
 }
 
 void	sprite_dir(t_all *all, int num)
@@ -75,9 +95,9 @@ void	draw_sprite(t_all *all, int num)
 			all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] >=
 			all->spr[num]->dist)
 		{
-			if (all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] < all->spr[num]->dist) {
-				printf("save dist = %lf, sprite dist = %lf\n", all->params->dist_to_wall[(int)all->spr[num]->offset_x + x], all->spr[num]->dist);
-			}
+			// if (all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] < all->spr[num]->dist) {
+				// printf("save dist = %lf, sprite dist = %lf\n", all->params->dist_to_wall[(int)all->spr[num]->offset_x + x], all->spr[num]->dist);
+			// }
 			y = 0;
 			while (y < dy)
 			{
@@ -161,6 +181,7 @@ void	draw_sprites(t_all *all)
 		}
 		num++;
 	}
+	fix_map(all);
 }
 
 

@@ -12,6 +12,16 @@
 
 #include "cub3d.h"
 
+int	main_loop(t_all *all)
+{
+	cast_rays(all);
+	draw_map(all);
+	ft_cast_rays(all);
+	draw_sprites(all);
+	key_events(all);
+	return (0);
+}
+
 static void	start_cub(t_all *all)
 {
 	init_player(all);
@@ -24,13 +34,14 @@ static void	start_cub(t_all *all)
 	all->data->addr = mlx_get_data_addr(all->data->img, &all->data->bits_per_pixel, \
 		&all->data->line_length, &all->data->endian);
 	buff_textures(all);
-	cast_rays(all);
-	draw_map(all);
-	ft_cast_rays(all);
-	draw_sprites(all);
+	all->params->dist_to_wall = (double*)malloc(sizeof(double) * all->params->width + 10);
+	if (!all->params->dist_to_wall)
+		error_close(all, 8);
 	mlx_put_image_to_window(all->data->mlx, all->data->win, \
 		all->data->img, 0, 0);
+	mlx_loop_hook(all->data->mlx, main_loop, all);
 	mlx_hook(all->data->win, 2, 1L << 0, key_press, all);
+	mlx_hook(all->data->win, 3, 1L<<1, key_release, all);
 	mlx_hook(all->data->win, 17, 1L << 0, exit_cub, all);
 	mlx_loop(all->data->mlx);
 }
@@ -52,6 +63,8 @@ static void	check_args(int argc, t_all *all)
 			&all->data->line_length, &all->data->endian);
 		buff_textures(all);
 		cast_rays(all);
+		draw_map(all);
+		ft_cast_rays(all);
 		draw_sprites(all);
 		create_bmp(all);
 	}
@@ -89,7 +102,8 @@ int	main(int argc, char **argv)
 }
 
 // косяки спрайтов
-// обработка цвета в парсере - F 0,128,asd
-// get_screen_size - проверка размеров экрана
 // норма
 // сортировка
+// мин значения
+// сега при движении
+// одновременное зажатие клавиш

@@ -97,6 +97,8 @@ void	draw_map(t_all *all)
 		{
 			if (all->params->map[y][x] == '1')
 				scale_map(all->data, x, y, 0xFFFFFF);
+			else if (all->params->map[y][x] == '2')
+				scale_map(all->data, x, y, 0x334455);
 			x++;
 		}
 		y++;
