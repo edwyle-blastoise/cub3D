@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int	main_loop(t_all *all)
+static int	main_loop(t_all *all)
 {
 	cast_rays(all);
 	draw_sprites(all);
@@ -21,10 +21,10 @@ static void	start_cub(t_all *all)
 		all->params->height);
 	all->data->addr = mlx_get_data_addr(all->data->img, &all->data->bits_per_pixel, \
 		&all->data->line_length, &all->data->endian);
-	buff_textures(all);
 	all->params->dist_to_wall = (double*)malloc(sizeof(double) * all->params->width + 10);
 	if (!all->params->dist_to_wall)
 		error_close(all, 8);
+	buff_textures(all);
 	mlx_put_image_to_window(all->data->mlx, all->data->win, \
 		all->data->img, 0, 0);
 	mlx_loop_hook(all->data->mlx, main_loop, all);
@@ -49,6 +49,9 @@ static void	check_args(int argc, t_all *all)
 			all->params->height);
 		all->data->addr = mlx_get_data_addr(all->data->img, &all->data->bits_per_pixel, \
 			&all->data->line_length, &all->data->endian);
+		all->params->dist_to_wall = (double*)malloc(sizeof(double) * all->params->width + 10);
+		if (!all->params->dist_to_wall)
+			error_close(all, 8);
 		buff_textures(all);
 		cast_rays(all);
 		draw_sprites(all);

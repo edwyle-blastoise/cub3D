@@ -21,7 +21,7 @@ void	check_map(t_all *all)
 		error_close(all, 3);
 }
 
-void	create_map(t_list **head, int size, t_all *all)
+static void	create_map(t_list **head, int size, t_all *all)
 {
 	int		i;
 	t_list	*tmp;

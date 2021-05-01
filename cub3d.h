@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/11 15:18:14 by eblastoi          #+#    #+#             */
-/*   Updated: 2021/03/11 15:18:18 by eblastoi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB3D_H
 # define CUB3D_H
 #include <stdio.h>
@@ -123,30 +111,26 @@ typedef struct  s_all
 	t_image		text[5];
 }				t_all;
 
-
-// void    params_init(t_params *params);
-// void    define_resolution(char *line, t_params *params);
 void	buff_textures(t_all *all);
 void	cast_rays(t_all *all);
 void	check_first_last_lines(t_all *all, int i);
 void	check_map(t_all *all);
 void	check_player(t_all *all, char *line);
 void	check_screen_size(t_all *all);
-int		check_wall(t_all *all);
 int		create_bmp(t_all *all);
 int		create_trgb(int r, int g, int b);
-// char	**create_map(t_list **head, int size);
+void	define_color(char *line, t_all *all);
+void	define_resolution(char *line, t_all *all);
+void	define_textures(char *line, t_all *all);
 void	dist_to_sprite(t_all *all, int num);
 void	draw(t_all *all, int x, int side);
 void	draw_map(t_all *all);
 void	draw_sprite(t_all *all, int num);
 void	draw_sprites(t_all *all);
 void	draw_wall(t_all *all, int x, int y, int side);
-// int     define_color(char *line, t_params *params);
 void	error_close(t_all *all, int i);
 int		exit_cub(t_all *all);
 void	ft_cast_rays(t_all *all);
-int		get_sprite_color(t_all *all, int num, int i, int j, int color);
 void	init_player(t_all *all);
 void	init_sprites(t_all *all);
 void	key_events(t_all *all);
@@ -154,22 +138,12 @@ int		key_press(int key, t_all *all);
 int		key_release(int key, t_all *all);
 void	params_init(t_params *params);
 void	parser(char *line, t_all *all);
-
-// void    draw_player(t_all *all);
-// void	ft_cast_ray(t_all *all);
-// void	make_rectangle_map(t_all *all);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	read_map(char *argv1, t_all *all);
 void	scale_map(t_data  *data, int x, int y, int color);
-// void    check_player(t_all *all, char *line);
 void	free_array(char **array);
-
-
-
 int		pixel_take(t_all *all, int x, int y, int side);
-
 void	sprite_dir(t_all *all, int num);
-
 void	sprites_init(t_all *all);
 
 

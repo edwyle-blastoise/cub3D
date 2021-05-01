@@ -1,19 +1,7 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/03/11 15:18:50 by eblastoi          #+#    #+#              #
-#    Updated: 2021/03/11 15:18:52 by eblastoi         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+SRCS		= cub3d.c parser.c define_params.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c sprites_utils.c screenshot_bmp.c errors_and_exit.c key_events.c cub3d_utils.c \
+			  ${GNL_DIR}/get_next_line.c ${GNL_DIR}/get_next_line_utils.c
 
-SRCS		= cub3d.c parser.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c screenshot_bmp.c move_and_exit.c \
-			  ${GNL_DIR}/get_next_line.c ${GNL_DIR}/get_next_line_utils.c 
-
-HEADERS		= cub3d.h 
+HEADERS		= cub3d.h
 
 OBJS		= ${SRCS:.c=.o}
 
@@ -30,7 +18,7 @@ NAME		= cub3D
 
 CC			= gcc
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -fsanitize=address -Wall -Wextra -Werror
 
 MLX_FLAGS	= -framework OpenGL -framework AppKit
 
@@ -39,10 +27,10 @@ RM			= rm -f
 %.o:		%.c ${HEADERS}
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-${LIBFT}:	
+${LIBFT}:
 			${MAKE} -j4 -C ${LIBFT_DIR} bonus
 
-${LIBMLX}:	
+${LIBMLX}:
 			${MAKE} -j4 -C ${MLX_DIR}
 
 ${NAME}:	${OBJS} ${LIBFT} ${LIBMLX}

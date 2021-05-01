@@ -27,16 +27,6 @@ void	ft_cast_rays(t_all *all)
 	}
 }
 
-// void	define_vars(t_all *all)
-// {
-
-// }
-
-// void	count_ray_length(t_all *all)
-// {
-
-// }
-
 double	horizont_cross(t_all *all, double angle)
 {
 	double	new_x;

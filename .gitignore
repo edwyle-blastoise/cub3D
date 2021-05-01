@@ -1,0 +1,9 @@
+.DS_Store
+.gitignore
+.vscode/
+Screenshot.bmp
+a.out
+a.out.dSYM/
+minilibx_opengl/.DS_Store
+*.o
+*.a
