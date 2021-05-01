@@ -96,9 +96,9 @@ void	key_events(t_all *all)
 	new_x = all->plr->x;
 	if (check_key(all, new_x, new_y))
 	{
-		cast_rays(all);
+		cast_rays(all, 0);
 		draw_sprites(all);
-		ft_cast_rays(all);
+		ft_cast_rays(all, 0);
 		draw_map(all);
 		mlx_put_image_to_window(all->data->mlx, all->data->win, \
 			all->data->img, 0, 0);

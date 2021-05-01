@@ -56,16 +56,15 @@ static	void	ft_free(char **res, size_t j)
 	free(res);
 }
 
-static	char	**fill_arr(char const *s, char c, size_t rows)
+static	char	**fill_arr(char const *s, char c, size_t rows, size_t len)
 {
 	char	**arr;
-	size_t	len;
 	size_t	j;
 	size_t	i;
 
 	i = 0;
 	j = 0;
-	arr = (char**)malloc((rows + 1) * sizeof(char*));
+	arr = (char **)malloc((rows + 1) * sizeof(char *));
 	if (!arr)
 		return (NULL);
 	arr[rows] = NULL;
@@ -76,7 +75,8 @@ static	char	**fill_arr(char const *s, char c, size_t rows)
 		else
 		{
 			len = count_length(s, i, c);
-			if (!(arr[j] = ft_substr(s, i, len)))
+			arr[j] = ft_substr(s, i, len);
+			if (!arr[j])
 				ft_free(arr, j);
 			j++;
 			i = i + len;
@@ -85,14 +85,16 @@ static	char	**fill_arr(char const *s, char c, size_t rows)
 	return (arr);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char		**result;
 	size_t		rows;
+	size_t		len;
 
+	len = 0;
 	if (!s)
 		return (NULL);
 	rows = count_rows(s, c);
-	result = fill_arr(s, c, rows);
+	result = fill_arr(s, c, rows, len);
 	return (result);
 }

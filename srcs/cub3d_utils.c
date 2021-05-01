@@ -43,7 +43,6 @@ void	params_init(t_params *params)
 	params->map_height = 0;
 	params->map_width = 0;
 	params->plr_found = 0;
-	params->error = 0;
 	params->sprites = 0;
 	params->key_w = 0;
 	params->key_up = 0;

@@ -1,5 +1,33 @@
 #include "cub3d.h"
 
+void	ft_cast_rays(t_all *all, int x)
+{
+	t_player	ray;
+	double		start;
+	double		end;
+
+	ray = *all->plr;
+	start = ray.direction - M_PI / 6;
+	end = ray.direction + M_PI / 6;
+	if (all->params->width > 200 || all->params->height > 100)
+	{
+		while (start <= end)
+		{
+			ray.x = all->plr->x * SCALE;
+			ray.y = all->plr->y * SCALE;
+			while (all->params->map[(int)(ray.y) \
+				/ SCALE][(int)(ray.x) / SCALE] != '1')
+			{
+				ray.x += cos(start);
+				ray.y += sin(start);
+				my_mlx_pixel_put(all->data, ray.x, ray.y, 0x990099);
+			}
+			start += M_PI / 3 / all->params->width;
+			x++;
+		}
+	}
+}
+
 void	search_plr(t_all *all, int x, int y)
 {
 	if (ft_strchr("NEWS", all->params->map[y][x]))

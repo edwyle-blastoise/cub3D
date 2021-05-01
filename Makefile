@@ -1,5 +1,20 @@
-SRCS		= cub3d.c parser.c define_params.c player.c create_map.c raycasting.c check_map.c textures.c draw.c sprites.c sprites_utils.c screenshot_bmp.c errors_and_exit.c key_events.c cub3d_utils.c \
-			  ${GNL_DIR}/get_next_line.c ${GNL_DIR}/get_next_line_utils.c
+SRCS		= srcs/cub3d.c \
+			srcs/parser.c \
+			srcs/define_params.c \
+			srcs/player.c \
+			srcs/create_map.c \
+			srcs/raycasting.c \
+			srcs/check_map.c \
+			srcs/textures.c \
+			srcs/draw.c \
+			srcs/sprites.c \
+			srcs/sprites_utils.c \
+			srcs/screenshot_bmp.c \
+			srcs/errors_and_exit.c \
+			srcs/key_events.c \
+			srcs/cub3d_utils.c \
+			${GNL_DIR}/get_next_line.c \
+			${GNL_DIR}/get_next_line_utils.c
 
 HEADERS		= cub3d.h
 
@@ -24,6 +39,8 @@ MLX_FLAGS	= -framework OpenGL -framework AppKit
 
 RM			= rm -f
 
+all:		${NAME}
+
 %.o:		%.c ${HEADERS}
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
@@ -35,8 +52,6 @@ ${LIBMLX}:
 
 ${NAME}:	${OBJS} ${LIBFT} ${LIBMLX}
 			${CC} ${OBJS} ${LIBFT} ${LIBMLX} ${MLX_FLAGS} -o ${NAME}
-
-all:		${NAME}
 
 clean:
 			${RM} ${OBJS}

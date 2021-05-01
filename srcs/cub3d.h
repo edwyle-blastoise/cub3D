@@ -1,24 +1,24 @@
 #ifndef CUB3D_H
 # define CUB3D_H
-#include <stdio.h>
-#include <fcntl.h>
-#include <math.h>
-#include "libft/libft.h"
-#include "gnl/get_next_line.h"
-#include "minilibx_opengl/mlx.h"
-#define SCALE 16
-#define ENTER 36
-#define ESC 53
-#define W 13
-#define A 0
-#define S 1
-#define D 2
-#define L 123
-#define R 124
-#define UP 126
-#define DOWN 125
+# include <stdio.h>
+# include <fcntl.h>
+# include <math.h>
+# include "../libft/libft.h"
+# include "../gnl/get_next_line.h"
+# include "../minilibx_opengl/mlx.h"
+# define SCALE 16
+# define ENTER 36
+# define ESC 53
+# define W 13
+# define A 0
+# define S 1
+# define D 2
+# define L 123
+# define R 124
+# define UP 126
+# define DOWN 125
 
-typedef struct  s_params
+typedef struct s_params
 {
 	int			settings;
 	int			width;
@@ -40,14 +40,12 @@ typedef struct  s_params
 	int			map_width;
 	int			map_start;
 	int			plr_found;
-	int			error;
 	double		wall_height;
 	int			dir_h;
 	int			dir_v;
 	double		*dist_to_wall;
 	double		hit_x;
 	double		hit_y;
-	double		hit;
 	int			sprites;
 	int			screen_height;
 	int			screen_width;
@@ -91,7 +89,7 @@ typedef struct s_player
 	double		direction;
 }				t_player;
 
-typedef struct  s_data
+typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
@@ -102,17 +100,27 @@ typedef struct  s_data
 	int			endian;
 }				t_data;
 
-typedef struct  s_all
+typedef struct s_search_cross
 {
-	t_params	*params;
-	t_data		*data;
-	t_player	*plr;
-	t_sprites	**spr;
-	t_image		text[5];
+	double	new_x;
+	double	new_y;
+	int		delta_x;
+	int		delta_y;
+	double	dist_h;
+	double	dist_v;
+}				t_search_cross;
+
+typedef struct s_all
+{
+	t_params		*params;
+	t_data			*data;
+	t_player		*plr;
+	t_sprites		**spr;
+	t_image			text[5];
 }				t_all;
 
 void	buff_textures(t_all *all);
-void	cast_rays(t_all *all);
+void	cast_rays(t_all *all, int i);
 void	check_first_last_lines(t_all *all, int i);
 void	check_map(t_all *all);
 void	check_player(t_all *all, char *line);
@@ -130,7 +138,7 @@ void	draw_sprites(t_all *all);
 void	draw_wall(t_all *all, int x, int y, int side);
 void	error_close(t_all *all, int i);
 int		exit_cub(t_all *all);
-void	ft_cast_rays(t_all *all);
+void	ft_cast_rays(t_all *all, int x);
 void	init_player(t_all *all);
 void	init_sprites(t_all *all);
 void	key_events(t_all *all);
@@ -140,11 +148,10 @@ void	params_init(t_params *params);
 void	parser(char *line, t_all *all);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	read_map(char *argv1, t_all *all);
-void	scale_map(t_data  *data, int x, int y, int color);
+void	scale_map(t_data *data, int x, int y, int color);
 void	free_array(char **array);
 int		pixel_take(t_all *all, int x, int y, int side);
 void	sprite_dir(t_all *all, int num);
 void	sprites_init(t_all *all);
-
 
 #endif

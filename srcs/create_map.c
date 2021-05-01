@@ -99,17 +99,20 @@ void	draw_map(t_all *all)
 
 	x = 0;
 	y = 0;
-	while (all->params->map[y])
+	if (all->params->width > 200 || all->params->height > 100)
 	{
-		x = 0;
-		while (all->params->map[y][x])
+		while (all->params->map[y])
 		{
-			if (all->params->map[y][x] == '1')
-				scale_map(all->data, x, y, 0xFFFFFF);
-			else if (all->params->map[y][x] == '2')
-				scale_map(all->data, x, y, 0x334455);
-			x++;
+			x = 0;
+			while (all->params->map[y][x])
+			{
+				if (all->params->map[y][x] == '1')
+					scale_map(all->data, x, y, 0xFFFFFF);
+				else if (all->params->map[y][x] == '2')
+					scale_map(all->data, x, y, 0x334455);
+				x++;
+			}
+			y++;
 		}
-		y++;
 	}
 }
