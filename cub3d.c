@@ -1,23 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 17:00:25 by eblastoi          #+#    #+#             */
-/*   Updated: 2021/03/27 17:00:35 by eblastoi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
 
 int	main_loop(t_all *all)
 {
 	cast_rays(all);
-	draw_map(all);
-	ft_cast_rays(all);
 	draw_sprites(all);
+	ft_cast_rays(all);
+	draw_map(all);
 	key_events(all);
 	return (0);
 }
@@ -63,9 +51,9 @@ static void	check_args(int argc, t_all *all)
 			&all->data->line_length, &all->data->endian);
 		buff_textures(all);
 		cast_rays(all);
-		draw_map(all);
-		ft_cast_rays(all);
 		draw_sprites(all);
+		ft_cast_rays(all);
+		draw_map(all);
 		create_bmp(all);
 	}
 }
