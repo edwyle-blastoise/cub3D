@@ -121,24 +121,25 @@ int	exit_cub(t_all *all)
 
 void	error_close(t_all *all, int i)
 {
+	(void)all;
 	if (i == 1)
 		printf("Error\nInvalid file name\n");
 	else if (i == 2)
-		printf("Error\nIncorrect parameters");
+		printf("Error\nIncorrect parameters\n");
 	else if (i == 3)
-		printf("Error\nThere must be one player on the map");
+		printf("Error\nThere must be one player on the map\n");
 	else if (i == 4)
 		printf("Error\nNot valid map\n");
 	else if (i == 5)
-		printf("Error\nResolution must have two positive int value");
+		printf("Error\nResolution must have two positive int value\n");
 	else if (i == 6)
-		printf("Error\nColors must have three int value");
+		printf("Error\nColors must have three int value\n");
 	else if (i == 7)
-		printf("Error\nColors must be in range [0-255]");
+		printf("Error\nColors must be in range [0-255]\n");
 	else if (i == 8)
-		printf("Error\nMemory error");
+		printf("Error\nMemory error\n");
 	else if (i == 9)
-		printf("Error\nTexture path error");
+		printf("Error\nTexture path error\n");
 	else if (i == 10)
 		printf("Bmp file creation error\n");
 	else if (i == 11)

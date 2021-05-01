@@ -95,6 +95,7 @@ int	main(int argc, char **argv)
 	all.plr = &plr;
 	all.data = &data;
 	all.params = &params;
+	all.params->map = NULL;
 	check_arg_name(argv, &all);
 	read_map(argv[1], &all);
 	check_args(argc, &all);
@@ -105,5 +106,3 @@ int	main(int argc, char **argv)
 // норма
 // сортировка
 // мин значения
-// сега при движении
-// одновременное зажатие клавиш

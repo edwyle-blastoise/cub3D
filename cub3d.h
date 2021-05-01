@@ -79,8 +79,7 @@ typedef struct s_sprites
 	double		y;
 	double		dist;
 	double		dir;
-	double		angle;
-	double		sprite_height;
+	double		sprite_size;
 	double		offset_x;
 	double		offset_y;
 }				t_sprites;
@@ -129,7 +128,9 @@ typedef struct  s_all
 // void    define_resolution(char *line, t_params *params);
 void	buff_textures(t_all *all);
 void	cast_rays(t_all *all);
+void	check_first_last_lines(t_all *all, int i);
 void	check_map(t_all *all);
+void	check_player(t_all *all, char *line);
 void	check_screen_size(t_all *all);
 int		check_wall(t_all *all);
 int		create_bmp(t_all *all);
@@ -156,7 +157,7 @@ void	parser(char *line, t_all *all);
 
 // void    draw_player(t_all *all);
 // void	ft_cast_ray(t_all *all);
-void	make_rectangle_map(t_all *all);
+// void	make_rectangle_map(t_all *all);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	read_map(char *argv1, t_all *all);
 void	scale_map(t_data  *data, int x, int y, int color);

@@ -18,7 +18,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 	dst = NULL;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
 int	create_trgb(int r, int g, int b)
@@ -31,7 +31,9 @@ int	create_trgb(int r, int g, int b)
 
 void	free_array(char **array)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (array[i])
 		free(array[i++]);
 	free(array);
@@ -68,7 +70,8 @@ void	params_init(t_params *params)
 
 void	check_screen_size(t_all *all)
 {
-	mlx_get_screen_size(all->data->mlx, &all->params->screen_width, &all->params->screen_height);
+	mlx_get_screen_size(all->data->mlx, &all->params->screen_width, \
+		&all->params->screen_height);
 	if (all->params->width > all->params->screen_width)
 		all->params->width = all->params->screen_width;
 	if (all->params->height > all->params->screen_height)

@@ -42,8 +42,8 @@ void	dist_to_sprite(t_all *all, int num)
 		all->spr[num]->dist = dist;// hypot(all->plr->x - (all->spr[num]->x + 0.5), all->plr->y - (all->spr[num]->y + 0.5));
 		//all->spr[num]->dist /= cos(all->spr[num]->dir);
 		// printf("Dist = %lf\n", all->spr[num]->dist);
+		all->params->map[(int)all->spr[num]->y][(int)all->spr[num]->x] = '3';
 	}
-	all->params->map[(int)all->spr[num]->y][(int)all->spr[num]->x] = '3';
 }
 
 void	sprite_dir(t_all *all, int num)
@@ -55,7 +55,7 @@ void	sprite_dir(t_all *all, int num)
 	while (all->spr[num]->dir - all->plr->direction < - M_PI)
 		all->spr[num]->dir += 2 * M_PI;
 	all->spr[num]->dir -= all->plr->direction;
-	// printf("Dir = %lf\n", all->spr[num]->dir);
+	// printf("Dir_sprite = %lf\n", all->spr[num]->dir);
 }
 
 int	get_sprite_color(t_all *all, int num, int i, int j, int color)
@@ -64,18 +64,17 @@ int	get_sprite_color(t_all *all, int num, int i, int j, int color)
 	int		tex_h;
 	double	x;
 	double	y;
-	int t = 4;
 
-	x = (double)all->spr[num]->sprite_height / all->text[t].texture_width;
-	y = (double)all->spr[num]->sprite_height / all->text[t].texture_height;
+	x = (double)all->spr[num]->sprite_size / all->text[4].texture_width;
+	y = (double)all->spr[num]->sprite_size / all->text[4].texture_height;
 	tex_w = (int)(i / x);
 	tex_h = (int)(j / y);
-	if (tex_h > all->text[t].texture_height)
-		tex_h = all->text[t].texture_height;
-	if (tex_w > all->text[t].texture_width)
-		tex_w = all->text[t].texture_width;
-	color = *(unsigned int *)(all->text[t].texture_addr + \
-	(tex_h * all->text[t].texture_width + tex_w));// * (all->text[4].texture_bpp / 8)));
+	if (tex_h > all->text[4].texture_height)
+		tex_h = all->text[4].texture_height;
+	if (tex_w > all->text[4].texture_width)
+		tex_w = all->text[4].texture_width;
+	color = *(unsigned int *)(all->text[4].texture_addr + \
+	(tex_h * all->text[4].texture_width + tex_w));// * (all->text[4].texture_bpp / 8)));
 	return (color);
 }
 
@@ -84,9 +83,9 @@ void	draw_sprite(t_all *all, int num)
 	int	y;
 	int	x;
 	int	color;
-	int dy = all->spr[num]->sprite_height;
+	int dy = all->spr[num]->sprite_size;
 	double asp = all->params->width / all->params->height;
-	int dx = (all->spr[num]->sprite_height * asp);
+	int dx = (all->spr[num]->sprite_size * asp);
 
 	x = 0;
 	while (x < dx)
@@ -95,16 +94,11 @@ void	draw_sprite(t_all *all, int num)
 			all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] >=
 			all->spr[num]->dist)
 		{
-			// if (all->params->dist_to_wall[(int)all->spr[num]->offset_x + x] < all->spr[num]->dist) {
-				// printf("save dist = %lf, sprite dist = %lf\n", all->params->dist_to_wall[(int)all->spr[num]->offset_x + x], all->spr[num]->dist);
-			// }
 			y = 0;
 			while (y < dy)
 			{
 				color = get_sprite_color(all, num, x, y, 0);
-
-				if ((all->spr[num]->offset_y + y >= 0) && (all->spr[num]->offset_y + y < all->params->height)
-					&& color != 0x000000)
+				if ((all->spr[num]->offset_y + y >= 0) && (all->spr[num]->offset_y + y < all->params->height) && color != 0x000000)
 					my_mlx_pixel_put(all->data, all->spr[num]->offset_x + x, all->spr[num]->offset_y + y, color);
 				y++;
 			}
@@ -151,8 +145,8 @@ void	draw_sprites(t_all *all)
 {
 	int	num;
 	double size;
-	double asp = all->params->width / ((double)all->params->height);
-	printf("asp=%lf\n", asp);
+	// double asp = all->params->width / ((double)all->params->height);
+	// printf("asp=%lf\n", asp);
 	num = 0;
 	while (num < all->params->sprites)
 	{
@@ -163,10 +157,10 @@ void	draw_sprites(t_all *all)
 		//all->spr[num]->offset_x = all->params->width / 2 - 1 + tan(all->spr[num]->dir) * all->params->height - all->spr[num]->sprite_height / 2;
 		//all->spr[num]->offset_y = all->params->height / 2 - all->spr[num]->sprite_height / 2;
 		size = all->params->width / (all->spr[num]->dist);// * asp; //* cos(all->spr[num]->dir
-		all->spr[num]->sprite_height = size;
+		all->spr[num]->sprite_size = size;
 		size /= 2;
-		printf("num=%d size = %lf, dir=%lf sin=%lf dist=%lf\n", num, all->spr[num]->sprite_height, all->spr[num]->dir, sin(all->spr[num]->dir), all->spr[num]->dist);
-		all->spr[num]->offset_x = all->params->width / 2 + tan(all->spr[num]->dir)  * all->params->width - (size);
+		printf("H=%lf\t dir_spr = %lf\tX =%f\n", all->spr[num]->sprite_size, all->spr[num]->dir, all->spr[num]->offset_x);
+		all->spr[num]->offset_x = all->params->width / 2 + tan(all->spr[num]->dir) * all->params->width - (size);
 
 		//all->spr[num]->offset_x = all->params->width / 2  - size - all->spr[num]->dir * (all->params->width  / (M_PI / 3));
 
@@ -174,11 +168,9 @@ void	draw_sprites(t_all *all)
 		all->spr[num]->offset_y = all->params->height / 2 - size;
 		if (fabs(all->spr[num]->dir) < M_PI_2 &&
 		//if ((all->spr[num]->dir) < M_PI_2 &&
-			all->spr[num]->sprite_height < 2000)// all->params->height * 7 / 9 )
-		{
-			draw_sprite(all, num);
+			all->spr[num]->sprite_size < 2000)// all->params->height * 7 / 9 )
+				draw_sprite(all, num);
 			//printf("num= %d [%lf:%lf]\n", num, all->spr[num]->x, all->spr[num]->y );
-		}
 		num++;
 	}
 	fix_map(all);

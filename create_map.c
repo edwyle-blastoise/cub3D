@@ -12,6 +12,27 @@
 
 #include "cub3d.h"
 
+void	check_map(t_all *all)
+{
+	int	i;
+
+	i = 0;
+	while (all->params->map[i])
+	{
+		if (ft_strchr(all->params->map[i], '1') \
+			|| ft_strchr(all->params->map[i], ' '))
+			all->params->map_height++;
+		else
+			error_close(all, 4);
+		check_player(all, all->params->map[i]);
+		i++;
+	}
+	i = 0;
+	check_first_last_lines(all, i);
+	if (all->params->plr_found != 1)
+		error_close(all, 3);
+}
+
 void	create_map(t_list **head, int size, t_all *all)
 {
 	int		i;
