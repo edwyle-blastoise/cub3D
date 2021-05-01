@@ -6,7 +6,7 @@
 /*   By: eblastoi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 15:18:14 by eblastoi          #+#    #+#             */
-/*   Updated: 2021/04/29 15:38:11 by eblastoi         ###   ########.fr       */
+/*   Updated: 2020/11/27 18:57:35 by eblastoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,16 @@ static	void	ft_free(char **res, size_t j)
 	free(res);
 }
 
-static	char	**fill_arr(char const *s, char c, size_t rows, size_t len)
+static	char	**fill_arr(char const *s, char c, size_t rows)
 {
 	char	**arr;
+	size_t	len;
 	size_t	j;
 	size_t	i;
 
 	i = 0;
 	j = 0;
-	arr = (char **)malloc((rows + 1) * sizeof(char *));
+	arr = (char**)malloc((rows + 1) * sizeof(char*));
 	if (!arr)
 		return (NULL);
 	arr[rows] = NULL;
@@ -74,9 +75,8 @@ static	char	**fill_arr(char const *s, char c, size_t rows, size_t len)
 			i++;
 		else
 		{
-			len = count_length(s, i, len);
-			arr[j] = ft_substr(s, i, len);
-			if (!arr[j])
+			len = count_length(s, i, c);
+			if (!(arr[j] = ft_substr(s, i, len)))
 				ft_free(arr, j);
 			j++;
 			i = i + len;
@@ -85,16 +85,14 @@ static	char	**fill_arr(char const *s, char c, size_t rows, size_t len)
 	return (arr);
 }
 
-char	**ft_split(char const *s, char c)
+char			**ft_split(char const *s, char c)
 {
 	char		**result;
 	size_t		rows;
-	size_t		len;
 
-	len = 0;
 	if (!s)
 		return (NULL);
 	rows = count_rows(s, c);
-	result = fill_arr(s, c, rows, len);
+	result = fill_arr(s, c, rows);
 	return (result);
 }

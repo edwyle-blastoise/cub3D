@@ -18,7 +18,7 @@ NAME		= cub3D
 
 CC			= gcc
 
-CFLAGS		= -fsanitize=address -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror
 
 MLX_FLAGS	= -framework OpenGL -framework AppKit
 

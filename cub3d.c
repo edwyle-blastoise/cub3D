@@ -68,6 +68,8 @@ static void	check_arg_name(char **argv, t_all *all)
 	name = ft_split(argv[1], '.');
 	if ((ft_strcmp(name[1], "cub") != 0))
 		error_close(all, 1);
+	if (!(ft_strncmp(argv[1], ".cub", 4)))
+		error_close(all, 1);
 	if (argv[2])
 	{
 		if ((ft_strcmp(argv[2], "--save")) != 0)
